@@ -4,18 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seite von XYZ</title>
+    <style>
+        body {
+            background: radial-gradient(circle, rgba(4,2,34,1) 0%, rgba(34,34,43,1) 100%);
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .centered-div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: large;
+            font-family: Arial, Helvetica, sans-serif;
+            margin-bottom: 30px; /* Optional: Um etwas Abstand zwischen den Divs zu schaffen */
+        }
+    </style>
 </head>
-<body style="background: radial-gradient(circle, rgba(4,2,34,1) 0%, rgba(34,34,43,1) 100%);">
-    <div style="text-align: center; font-size:large; font-family: Arial, Helvetica, sans-serif;">
+<body>
+    <div class="centered-div" style="color: white; font-size: x-large;">
         <h1>Willkommen auf meiner unfertigen Seite</h1>
     </div>
-    <div style="text-align: center; font-size:large; font-family: Arial, Helvetica, sans-serif;">
+    <div class="centered-div">
         <a href="https://discord.gg/gamex">Join meinem Discord Server</a>
     </div>
-    <div style="text-align: center; font-size:large; font-family: Arial, Helvetica, sans-serif; top: 50%;">
+    <div class="centered-div">
         <h1>Hört auch gerne in diesen Podcast rein (nicht meiner)</h1>
     </div>
-    <div>
+    <div class="centered-div">
         <iframe style="border-radius:12px; display: block; margin: auto;" src="https://open.spotify.com/embed/episode/5rjGrE7Vi9bUk4siqD8jHR?utm_source=generator" width="30%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
     </div>
 </body>
