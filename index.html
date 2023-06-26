@@ -21,11 +21,32 @@
             font-family: Arial, Helvetica, sans-serif;
             margin-bottom: 30px; /* Optional: Um etwas Abstand zwischen den Divs zu schaffen */
         }
+        .rainbow {
+        animation: colorRotate .5s linear 0s infinite;
+        }
+
+        @keyframes colorRotate {
+        from {
+            color: #6666ff;
+        }
+        10% {
+            color: #0099ff;
+        }
+        50% {
+            color: #00ff00;
+        }
+        75% {
+            color: #ff3399;
+        }
+        100% {
+            color: #6666ff;
+        }
+        }
     </style>
 </head>
 <body>
-    <div class="centered-div" style="color: white; font-size: x-large;">
-        <h1>Willkommen auf meiner unfertigen Seite</h1>
+    <div id="rainbowcolors" class="centered-div" style="color: white; font-size: x-large;">
+        <h1 class="rainbow">Willkommen auf meiner unfertigen Seite</h1>
     </div>
     <div class="centered-div">
         <a href="https://discord.gg/gamex">Join meinem Discord Server</a>
