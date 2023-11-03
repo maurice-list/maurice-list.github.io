@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bin ich reich?</title>
+    <style>
+        body {
+            background: radial-gradient(circle, rgba(4,2,34,1) 0%, rgba(34,34,43,1) 100%);
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .centered-div {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: large;
+            font-family: Arial, Helvetica, sans-serif;
+            margin-bottom: 30px; /* Optional: Um etwas Abstand zwischen den Divs zu schaffen */
+        }
+        .rainbow {
+        animation: colorRotate .5s linear 0s infinite;
+        }
+        .radio-style {
+            font-size: xx-small;
+            margin-left: 30%;
+            margin-right: 30%;
+            font-family: Arial, Helvetica, sans-serif;
+            color: white;
+        }
+
+        @keyframes colorRotate {
+        from {
+            color: #6666ff;
+        }
+        10% {
+            color: #0099ff;
+        }
+        50% {
+            color: #00ff00;
+        }
+        75% {
+            color: #ff3399;
+        }
+        100% {
+            color: #6666ff;
+        }
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const calculateButton = document.getElementById("calculate");
+            calculateButton.addEventListener("click", function () {
+                const selectedKlopapierValue = parseInt(document.querySelector('input[name="Klopapier"]:checked').value);
+                const selectedAutoValue = parseInt(document.querySelector('input[name="Auto"]:checked').value);
+                const selectedEssenValue = parseInt(document.querySelector('input[name="Essen"]:checked').value);
+
+                const finalValue = selectedKlopapierValue + selectedAutoValue + selectedEssenValue
+                alert("Du hast " + finalValue + " Punkte.");
+                if (finalValue >= 12) { // Mindestens 12 Punkte
+                    document.getElementById("result").innerHTML = "Du bist mies reich, warum hast du überhaupt diesen Test gemacht?";
+                } else if (finalValue >= 6) { // Zwichen 6 und 11 Punkten
+                    document.getElementById("result").innerHTML = "Dir geht es schon sehr gut, dir wird es auch in deinem restlichen Leben gut gehen.";
+                } else if (finalValue >= -5) { // Zwichen -5 und 5 Punkten
+                    document.getElementById("result").innerHTML = "Du bist im Druchschnitt, nicht arm, aber auch nicht reich.";
+                } else if (finalValue >= -11) { // Zwichen -11 und -6 Punkten
+                    document.getElementById("result").innerHTML = "Du bist zwar alles was zu zum Leben brauchst, aber mehr auch nicht.";
+                } else { // Weniger als -11 Punkte
+                    document.getElementById("result").innerHTML = "Statt diesen Test zu machen, geh lieber arbeiten oder betteln.";
+                }
+        });
+    });
+    </script>
+</head>
+<body>
+    <div class="centered-div" style="color: white;">
+        <h1>Bin ich reich?</h1>
+    </div>
+    <div class="radio-style">
+        <h1>
+            Wie viele Lagen hat dein Klopapier?
+        </h1>
+        <fieldset>
+            <input type="radio" id="klo2" name="Klopapier" value="-2">
+            <label for="klo" class="value-style">
+                2
+            </label><br>
+            <input type="radio" id="klo3" name="Klopapier" value="0">
+            <label for="klo" class="value-style">
+                3
+            </label><br>
+            <input type="radio" id="klo4" name="Klopapier" value="1">
+            <label for="klo" class="value-style">
+                4
+            </label><br>
+            <input type="radio" id="klo5" name="Klopapier" value="2">
+            <label for="klo" class="value-style">
+                5+
+            </label><br>
+        </fieldset>
+        <h1>
+            Wie viele Autos besitzen deine Eltern?
+        </h1>
+        <fieldset>
+            <input type="radio" id="auto0" name="Auto" value="-2">
+            <label for="auto" class="value-style">
+                0
+            </label><br>
+            <input type="radio" id="auto1" name="Auto" value="0">
+            <label for="auto" class="value-style">
+                1
+            </label><br>
+            <input type="radio" id="auto2" name="Auto" value="2">
+            <label for="auto" class="value-style">
+                2
+            </label><br>
+            <input type="radio" id="auto3" name="Auto" value="3">
+            <label for="auto" class="value-style">
+                3+
+            </label><br>
+        </fieldset>
+        <h1>
+            Wie viel mal gehst du in der Woche auswärts essen?
+        </h1>
+        <fieldset>
+            <input type="radio" id="essen0" name="Essen" value="-1">
+            <label for="essen" class="value-style">
+                0
+            </label><br>
+            <input type="radio" id="essen1" name="Essen" value="0">
+            <label for="essen" class="value-style">
+                1
+            </label><br>
+            <input type="radio" id="essen2" name="Essen" value="2">
+            <label for="essen" class="value-style">
+                2
+            </label><br>
+            <input type="radio" id="essen3" name="Essen" value="4">
+            <label for="essen" class="value-style">
+                3+
+            </label><br>
+        </fieldset>
+    </div>
+    <div>
+        <button id="calculate" style="float: right; width: 100px; height: 40px; margin-right: 30%; margin-top: 20px;">
+            Berechnen
+        </button>
+    </div>
+    <div class="centered-div" style="color: white;">
+        <h1 id="result">
+        </h1>
+    </div>
+</body>
+</html>
