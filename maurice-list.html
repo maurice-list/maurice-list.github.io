@@ -45,7 +45,7 @@
     <script>
         const container = document.querySelector('.demon-list');
 
-        fetch('resources/data/_levels.json')
+        fetch('resources/data/levels.json')
             .then(response => response.json())
             .then(levelIds => Promise.all(
                 levelIds.map(id =>
