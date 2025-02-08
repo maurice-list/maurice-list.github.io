@@ -1,0 +1,123 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100vh;
+    margin: 0;
+    background-color: #f0f0f0;
+    overflow: hidden;
+    position: relative;
+    padding-top: 50px;
+}
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('./resources/images/xyz.gif');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(7px);
+    z-index: -1;
+}
+.container {
+    display: flex;
+    flex-direction: column;
+}
+.profile-container {
+    text-align: center;
+    margin-bottom: 20px;
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 20px;
+    border-radius: 10px;
+}
+.profile-pic {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin: 0px 0;
+}
+.profile-container h1 {
+    margin: 10px 0;
+    color: black;
+    font-family: 'Fredoka One';
+    font-size: 20px;
+    font-weight: 600;
+}
+.profile-container h2 {
+    margin: 10px 0;
+    color: black;
+    font-family: 'Fredoka One';
+    font-size: 16px;
+    font-weight: 300;
+}
+.link-container a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 500px;
+    margin: 10px auto;
+    padding: 20px;
+    padding-right: 16px;
+    background-color: #ffffff;
+    color: black;
+    text-decoration: none;
+    border-radius: 20px;
+    transition: background-color 0.3s;
+    position: relative;
+}
+.link-container {
+    text-align: center;
+}
+.link-container a:hover {
+    background-color: lightgray;
+}
+.link-container a[href*="discord.com"]::before,
+.link-container a[href*="maurice-list.html"]::before {
+    content: '';
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+    background-size: cover;
+}
+.link-container a[href*="discord.com"]::before {
+    background-image: url('./resources/logos/discord.png');
+}
+.link-container a[href*="maurice-list.html"]::before {
+    background-image: url('./resources/icons/maurice.png');
+}
+.link-container h3 {
+    margin: 0px 0;
+    color: black;
+    font-family: 'Fredoka One';
+    font-size: 16px;
+}
+.link-container a {
+    margin: 10px 0;
+    color: black;
+    font-family: 'Fredoka One';
+    font-size: 16px;
+}
+
+.social-icons {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.social-icon {
+    margin: 0 10px;
+}
+
+.social-icon img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+}

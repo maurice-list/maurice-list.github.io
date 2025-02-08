@@ -1,0 +1,21 @@
+{
+	"id": 123456789,
+	"name": "Maurice Challenge",
+	"tags": [
+        "Tag1", "Tag2", "Tag3"
+	],
+	"creators": [
+		"Creator1", "Creator2", "Creator3"
+	],
+	"verifier": "Verifier",
+	"verification": "youtube_video_id",
+	"percentToQualify": 100,
+	"song": 123456,
+	"records": [
+		{
+			"user": "Victor1",
+			"link": "youtube_video_id",
+			"percent": 100
+		}
+	]
+}
