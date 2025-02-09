@@ -3,6 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Maurice Challenge List</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://fonts.googleapis.com/css?family=Fredoka One' rel='stylesheet'>
+    <link rel="icon" href="../resources/icons/maurice.png">
     <style>
         .demon-list {
             display: flex;
@@ -60,7 +63,8 @@
             .then(levels => {
                 const validLevels = levels.filter(level => level !== null);
 
-                validLevels.forEach(demon => {
+                validLevels.forEach((demon, idx) => {
+                    const placement = idx + 1;
                     const demonDiv = document.createElement('div');
                     demonDiv.classList.add('demon-item');
                     demonDiv.innerHTML = `
@@ -68,14 +72,16 @@
                             <img src="https://i.ytimg.com/vi/${demon.verification}/mqdefault.jpg" alt="${demon.name}">
                         </a>
                         <div class="demon-info">
-                            <strong>${demon.name}</strong>
+                            <a href="./list?placement=${placement}">
+                                #${placement} - ${demon.name}
+                            </a>
                             <span>${demon.creators[0]}</span>
                         </div>
                     `;
                     container.appendChild(demonDiv);
                 });
             })
-            .catch(error => console.error('Error loading _levels.json:', error));
+            .catch(error => console.error('Error loading levels.json:', error));
     </script>
 </body>
 </html>

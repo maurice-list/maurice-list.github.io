@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Level Detail</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Fredoka+One"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin: 20px;
+      }
+      .level-detail {
+        max-width: 600px;
+        margin: 50px auto;
+      }
+      .back-link {
+        margin-top: 20px;
+        display: inline-block;
+        font-size: 16px;
+        color: blue;
+        text-decoration: none;
+      }
+      .back-link:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="level-detail" class="level-detail">Loading level details...</div>
+    <script>
+      const detailContainer = document.getElementById("level-detail");
+      const params = new URLSearchParams(window.location.search);
+      const placementParam = params.get("placement");
+
+      if (!placementParam) {
+        detailContainer.innerText = "No placement parameter provided.";
+      } else {
+        const placement = parseInt(placementParam, 10);
+        if (isNaN(placement) || placement < 1) {
+          detailContainer.innerText = "Invalid placement parameter.";
+        } else {
+          fetch("../resources/data/levels.json")
+            .then((response) => response.json())
+            .then((levelIds) =>
+              Promise.all(
+                levelIds.map((id) =>
+                  fetch(`../resources/data/levels/${id}.json`)
+                    .then((response) => response.json())
+                    .catch((error) => {
+                      console.error(`Error loading level ${id}:`, error);
+                      return null;
+                    })
+                )
+              )
+            )
+            .then((levels) => {
+              const validLevels = levels.filter((level) => level !== null);
+              if (placement > validLevels.length) {
+                detailContainer.innerText = "Level not found.";
+              } else {
+                const level = validLevels[placement - 1];
+                let recordsHtml = "";
+                if (level.records && level.records.length > 0) {
+                  recordsHtml = `
+        <h2>Records</h2>
+        <table style="width: 640px;" border="1" cellpadding="8" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Record Holder</th>
+              <th>Progress</th>
+              <th>Video Proof</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+                  level.records.forEach((record) => {
+                    recordsHtml += `
+            <tr>
+              <td>${record.user}</td>
+              <td>${record.percent}%</td>
+              <td>
+                <a href="https://youtu.be/${record.link}" target="_blank">Proof</a>
+              </td>
+            </tr>
+        `;
+                  });
+                  recordsHtml += `
+          </tbody>
+        </table>
+      `;
+                }
+                detailContainer.innerHTML = `
+      <h1>#${placement} - ${level.name}</h1>
+      <p>by ${level.creators[0]}, verified by ${level.verifier}</p>
+      <div class="video-container">
+        <iframe width="640" height="360" 
+                src="https://www.youtube.com/embed/${level.verification}?rel=0" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+        </iframe>
+      </div>
+      <p>Additional details about the level can be added here.</p>
+      ${recordsHtml}
+      <a class="back-link" href="../">Back to list</a>
+    `;
+              }
+            })
+            .catch((error) => {
+              console.error("Error fetching levels:", error);
+              detailContainer.innerText = "Error loading level details.";
+            });
+        }
+      }
+    </script>
+  </body>
+</html>
