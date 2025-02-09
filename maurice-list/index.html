@@ -5,7 +5,7 @@
     <title>Maurice Challenge List</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://fonts.googleapis.com/css?family=Lexend+Deca' rel='stylesheet'>
-    <link rel="icon" href="../resources/icons/maurice.png">
+    <link rel="icon" href="/resources/icons/maurice.png">
     <style>
         .demon-list {
             display: flex;
@@ -54,13 +54,13 @@
 
         // Fetch users and levels data together
         Promise.all([
-            fetch('resources/data/users.json').then(r => r.json()),
-            fetch('resources/data/levels.json').then(r => r.json())
+            fetch('/maurice-list/resources/data/users.json').then(r => r.json()),
+            fetch('/maurice-list/resources/data/levels.json').then(r => r.json())
         ])
         .then(([userMap, levelIds]) => {
             return Promise.all(
                 levelIds.map(id =>
-                    fetch(`resources/data/levels/${id}.json`)
+                    fetch(`/maurice-list/resources/data/levels/${id}.json`)
                         .then(resp => resp.json())
                         .catch(error => {
                             console.error(`Error loading level ${id}:`, error);

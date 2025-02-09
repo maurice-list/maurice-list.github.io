@@ -45,14 +45,14 @@
         const changelogContainer = document.getElementById('changelog-container');
 
         Promise.all([
-            fetch('../resources/data/changelog.json').then(response => response.json()),
-            fetch('../resources/data/levels.json').then(response => response.json())
+            fetch('/maurice-list/resources/data/changelog.json').then(response => response.json()),
+            fetch('/maurice-list/resources/data/levels.json').then(response => response.json())
         ])
         .then(([changelogData, levelsData]) => {
             // Create a map of level IDs to level names
             const levelMap = {};
             levelsData.forEach(levelId => {
-                fetch(`../resources/data/levels/${levelId}.json`)
+                fetch(`/maurice-list/resources/data/levels/${levelId}.json`)
                     .then(response => response.json())
                     .then(level => {
                         levelMap[levelId] = level.name;
