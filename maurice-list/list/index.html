@@ -8,6 +8,7 @@
       href="https://fonts.googleapis.com/css?family=Fredoka+One"
       rel="stylesheet"
     />
+    <link rel="icon" href="/resources/icons/maurice.png">
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -44,78 +45,137 @@
         if (isNaN(placement) || placement < 1) {
           detailContainer.innerText = "Invalid placement parameter.";
         } else {
-          fetch("../resources/data/levels.json")
-            .then((response) => response.json())
-            .then((levelIds) =>
-              Promise.all(
-                levelIds.map((id) =>
-                  fetch(`../resources/data/levels/${id}.json`)
-                    .then((response) => response.json())
-                    .catch((error) => {
-                      console.error(`Error loading level ${id}:`, error);
-                      return null;
-                    })
-                )
+          // First, also fetch changelog.json to show "Position History"
+          Promise.all([
+            fetch("../resources/data/users.json").then(r => r.json()),
+            fetch("../resources/data/levels.json").then(r => r.json()),
+            fetch("../resources/data/changelog.json").then(r => r.json())
+          ])
+          .then(([userMap, levelIds, changelogData]) => {
+            return Promise.all(
+              levelIds.map(id =>
+                fetch(`../resources/data/levels/${id}.json`)
+                  .then(resp => resp.json())
+                  .catch(error => {
+                    console.error(`Error loading level ${id}:`, error);
+                    return null;
+                  })
               )
-            )
-            .then((levels) => {
-              const validLevels = levels.filter((level) => level !== null);
-              if (placement > validLevels.length) {
-                detailContainer.innerText = "Level not found.";
-              } else {
-                const level = validLevels[placement - 1];
-                let recordsHtml = "";
-                if (level.records && level.records.length > 0) {
-                  recordsHtml = `
-        <h2>Records</h2>
-        <table style="width: 640px;" border="1" cellpadding="8" cellspacing="0">
-          <thead>
-            <tr>
-              <th>Record Holder</th>
-              <th>Progress</th>
-              <th>Video Proof</th>
-            </tr>
-          </thead>
-          <tbody>
-      `;
-                  level.records.forEach((record) => {
-                    recordsHtml += `
-            <tr>
-              <td>${record.user}</td>
-              <td>${record.percent}%</td>
-              <td>
-                <a href="https://youtu.be/${record.link}" target="_blank">Proof</a>
-              </td>
-            </tr>
-        `;
-                  });
-                  recordsHtml += `
-          </tbody>
-        </table>
-      `;
-                }
-                detailContainer.innerHTML = `
-      <h1>#${placement} - ${level.name}</h1>
-      <p>by ${level.creators[0]}, verified by ${level.verifier}</p>
-      <div class="video-container">
-        <iframe width="640" height="360" 
-                src="https://www.youtube.com/embed/${level.verification}?rel=0" 
-                frameborder="0" 
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                allowfullscreen>
-        </iframe>
-      </div>
-      <p>Additional details about the level can be added here.</p>
-      ${recordsHtml}
-      <a class="back-link" href="../">Back to list</a>
-    `;
-              }
-            })
-            .catch((error) => {
-              console.error("Error fetching levels:", error);
-              detailContainer.innerText = "Error loading level details.";
-            });
+            ).then(levels => ({ userMap, levelIds, levels, changelogData }));
+          })
+          .then(({ userMap, levelIds, levels, changelogData }) => {
+            const validLevels = levels.filter(level => level !== null);
+            if (placement > validLevels.length) {
+              detailContainer.innerText = "Level not found.";
+              return;
+            }
+            const level = validLevels[placement - 1];
+            const fileId = levelIds[placement - 1];
+
+            // Update the document title with the level name:
+            document.title = `#${placement} - ${level.name}`;
+
+            const historyEntries = changelogData.filter(entry => entry.name === fileId);
+
+            // ...build your historyHtml using 'historyEntries'...
+            let historyHtml = "";
+            if (historyEntries.length > 0) {
+              historyHtml = `
+                <h2>Position History</h2>
+                <a href="#" onclick="togglePositionHistory(); return false;">(Click to expand/collapse)</a>
+                <div id="position-history" style="display: none; margin-top: 10px;">
+                  <table style="width: 640px;" border="1" cellpadding="8" cellspacing="0">
+                    <thead>
+                      <tr>
+                        <th>Date</th>
+                        <th>Old Position</th>
+                        <th>New Position</th>
+                        <th>Reason</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+              `;
+              console.log(historyEntries);
+              historyEntries.forEach(h => {
+                historyHtml += `
+                      <tr>
+                        <td>${new Date(Number(h.date * 1000)).toLocaleDateString()}</td>
+                        <td>${h.from_rank ? h.from_rank : "-"}</td>
+                        <td>${h.to_rank}</td>
+                        <td>${h.reason}</td>
+                      </tr>
+                `;
+              });
+              historyHtml += `
+                    </tbody>
+                  </table>
+                </div>
+              `;
+            } else {
+              historyHtml = `<h2>Position History</h2><p>No history found.</p>`;
+            }
+
+            // Build "Records" table or "No records yet!"
+            let recordsHtml = "";
+            if (level.records && level.records.length > 0) {
+              recordsHtml = `
+                <h2>Records</h2>
+                <table style="width: 640px;" border="1" cellpadding="8" cellspacing="0">
+                  <thead>
+                    <tr>
+                      <th>Record Holder</th>
+                      <th>Progress</th>
+                      <th>Video Proof</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+              `;
+              level.records.forEach(record => {
+                const userName = userMap[record.user] || record.user;
+                recordsHtml += `
+                    <tr>
+                      <td>${userName}</td>
+                      <td>${record.percent}%</td>
+                      <td><a href="https://youtu.be/${record.link}" target="_blank">Proof</a></td>
+                    </tr>
+                `;
+              });
+              recordsHtml += `
+                  </tbody>
+                </table>
+              `;
+            } else {
+              recordsHtml = `<h2>Records</h2><p>No records yet!</p>`;
+            }
+
+            // Render final HTML
+            detailContainer.innerHTML = `
+              <h1>#${placement} - ${level.name}</h1>
+              <p>by ${userMap[level.creators[0]] || level.creators[0]}, verified by ${userMap[level.verifier] || level.verifier}</p>
+              <div class="video-container">
+                <iframe width="640" height="360"
+                        src="https://www.youtube.com/embed/${level.verification}?rel=0"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen>
+                </iframe>
+              </div>
+              ${historyHtml}
+              ${recordsHtml}
+              <a class="back-link" href="../">Back to list</a>
+            `;
+          })
+          .catch(error => {
+            console.error("Error fetching data:", error);
+            detailContainer.innerText = "Error loading level details.";
+          });
         }
+      }
+
+      // Simple toggle function for the position history
+      function togglePositionHistory() {
+        const ph = document.getElementById('position-history');
+        ph.style.display = (ph.style.display === 'none') ? 'block' : 'none';
       }
     </script>
   </body>

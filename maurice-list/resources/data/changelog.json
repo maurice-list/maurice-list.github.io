@@ -1,0 +1,22 @@
+[
+    {
+        "date": 1739071110,
+        "action": "placed",
+        "name": "jonas_challenge",
+        "from_rank": null,
+        "to_rank": 1,
+        "above": null,
+        "below": null,
+        "reason": "Added to list"
+    },
+    {
+        "date": 1739117843,
+        "action": "placed",
+        "name": "schweinepanzer",
+        "from_rank": null,
+        "to_rank": 1,
+        "above": "jonas_challenge",
+        "below": null,
+        "reason": "Added to list"
+    }
+]

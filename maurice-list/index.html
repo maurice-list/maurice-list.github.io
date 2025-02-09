@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Maurice Challenge List</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href='https://fonts.googleapis.com/css?family=Fredoka One' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css?family=Lexend+Deca' rel='stylesheet'>
     <link rel="icon" href="../resources/icons/maurice.png">
     <style>
         .demon-list {
@@ -42,46 +42,55 @@
     </style>
 </head>
 <body>
-    <h1>Maurice Challenge List</h1>
+    <div style="display: flex; align-items: center; padding: 20px;">
+        <h1 style="margin: 0; font-family: 'Lexend Deca', sans-serif; margin-right: 5%;">Maurice Challenge List</h1>
+        <a href="/maurice-list/leaderboard" style="font-family: 'Fredoka One'; font-size: 24px; text-decoration: none; color: black; margin-right: 20px;">Leaderboard</a>
+        <a href="/maurice-list/changelog" style="font-family: 'Fredoka One'; font-size: 24px; text-decoration: none; color: black;">Changelog</a>
+    </div>
     <div class="demon-list">
     </div>
     <script>
         const container = document.querySelector('.demon-list');
 
-        fetch('resources/data/levels.json')
-            .then(response => response.json())
-            .then(levelIds => Promise.all(
+        // Fetch users and levels data together
+        Promise.all([
+            fetch('resources/data/users.json').then(r => r.json()),
+            fetch('resources/data/levels.json').then(r => r.json())
+        ])
+        .then(([userMap, levelIds]) => {
+            return Promise.all(
                 levelIds.map(id =>
                     fetch(`resources/data/levels/${id}.json`)
-                        .then(response => response.json())
+                        .then(resp => resp.json())
                         .catch(error => {
                             console.error(`Error loading level ${id}:`, error);
                             return null;
                         })
                 )
-            ))
-            .then(levels => {
-                const validLevels = levels.filter(level => level !== null);
+            ).then(levels => ({ userMap, levels }));
+        })
+        .then(({ userMap, levels }) => {
+            const validLevels = levels.filter(level => level !== null);
 
-                validLevels.forEach((demon, idx) => {
-                    const placement = idx + 1;
-                    const demonDiv = document.createElement('div');
-                    demonDiv.classList.add('demon-item');
-                    demonDiv.innerHTML = `
-                        <a href="https://youtu.be/${demon.verification}" target="_blank">
-                            <img src="https://i.ytimg.com/vi/${demon.verification}/mqdefault.jpg" alt="${demon.name}">
+            validLevels.forEach((demon, idx) => {
+                const placement = idx + 1;
+                const demonDiv = document.createElement('div');
+                demonDiv.classList.add('demon-item');
+                demonDiv.innerHTML = `
+                    <a href="https://youtu.be/${demon.verification}" target="_blank">
+                        <img src="https://i.ytimg.com/vi/${demon.verification}/mqdefault.jpg" alt="${demon.name}">
+                    </a>
+                    <div class="demon-info">
+                        <a href="./list?placement=${placement}">
+                            #${placement} - ${demon.name}
                         </a>
-                        <div class="demon-info">
-                            <a href="./list?placement=${placement}">
-                                #${placement} - ${demon.name}
-                            </a>
-                            <span>${demon.creators[0]}</span>
-                        </div>
-                    `;
-                    container.appendChild(demonDiv);
-                });
-            })
-            .catch(error => console.error('Error loading levels.json:', error));
+                        <span>${userMap[demon.creators[0]] || demon.creators[0]}</span>
+                    </div>
+                `;
+                container.appendChild(demonDiv);
+            });
+        })
+        .catch(error => console.error('Error loading levels:', error));
     </script>
 </body>
 </html>
