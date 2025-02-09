@@ -5,8 +5,16 @@
     <title>Maurice Challenge List</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://fonts.googleapis.com/css?family=Lexend+Deca' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css2?family=Montserrat' rel='stylesheet'>
     <link rel="icon" href="/resources/icons/maurice.png">
     <style>
+        /* CSS Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         .demon-list {
             display: flex;
             flex-direction: column;
@@ -21,7 +29,7 @@
             border: 2px solid gray;
             border-radius: 5px;
             width: 80%;
-            max-width: 600px;
+            max-width: 800px;
             min-height: 10vh;
         }
         .demon-item img {
@@ -33,20 +41,63 @@
             flex-direction: column;
         }
         .demon-info a {
-            color: blue;
+            color: black;
             text-decoration: none;
+            font-size: 24px;
+            font-weight: bolder;
+            font-family: "Montserrat";
         }
-        .demon-info a:hover {
-            text-decoration: underline;
+        .demon-info span {
+            color: rgb(65, 65, 65);
+            font-size: 18px;
+            font-family: "Montserrat";
+            font-weight: bold;
+            margin-top: 1%;
+        }
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px;
+            border-bottom: 2px solid lightcoral;
+            background-color: lightcoral;
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+        }
+        .header-right a {
+            font-family: 'Lexend Deca';
+            font-size: 24px;
+            font-weight: bolder;
+            text-decoration: none;
+            color: black;
+            margin-left: 20px;
+        }
+        .divider {
+            width: 100%;
+            height: 2px;
+            background-color: transparent;
+            margin: 20px 0;
         }
     </style>
 </head>
 <body>
-    <div style="display: flex; align-items: center; padding: 20px;">
-        <h1 style="margin: 0; font-family: 'Lexend Deca', sans-serif; margin-right: 5%;">Maurice Challenge List</h1>
-        <a href="/maurice-list/leaderboard" style="font-family: 'Fredoka One'; font-size: 24px; text-decoration: none; color: black; margin-right: 20px;">Leaderboard</a>
-        <a href="/maurice-list/changelog" style="font-family: 'Fredoka One'; font-size: 24px; text-decoration: none; color: black;">Changelog</a>
+    <div class="header-container">
+        <div class="header-left">
+            <h1 style="margin: 0; font-family: 'Lexend Deca', sans-serif;">Maurice Challenge List</h1>
+            <img src="/maurice-list/resources/images/GrandpaDemon.png" alt="Maurice Icon" style="width: 50px; height: 50px; margin-left: 20px;">
+        </div>
+        <div class="header-right">
+            <a href="/maurice-list/leaderboard">Leaderboard</a>
+            <a href="/maurice-list/changelog">Changelog</a>
+        </div>
     </div>
+    <div class="divider"></div>
     <div class="demon-list">
     </div>
     <script>

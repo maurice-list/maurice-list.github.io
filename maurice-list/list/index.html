@@ -1,13 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
     <title>Level Detail</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link
-      href="https://fonts.googleapis.com/css?family=Fredoka+One"
-      rel="stylesheet"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://fonts.googleapis.com/css?family=Lexend+Deca' rel='stylesheet'>
+    <link href='https://fonts.googleapis.com/css2?family=Montserrat' rel='stylesheet'>
     <link rel="icon" href="/resources/icons/maurice.png">
     <style>
       body {
@@ -81,7 +79,7 @@
             let historyHtml = "";
             if (historyEntries.length > 0) {
               historyHtml = `
-                <h2>Position History</h2>
+                <h2 style="font-family: Calibri">Position History</h2>
                 <a href="#" onclick="togglePositionHistory(); return false;">(Click to expand/collapse)</a>
                 <div id="position-history" style="display: none; margin-top: 10px;">
                   <table style="width: 640px;" border="1" cellpadding="8" cellspacing="0">
@@ -112,7 +110,7 @@
                 </div>
               `;
             } else {
-              historyHtml = `<h2>Position History</h2><p>No history found.</p>`;
+              historyHtml = `<h2 style="font-family: Calibri>Position History</h2><p>No history found.</p>`;
             }
 
             // Build "Records" table or "No records yet!"
@@ -150,8 +148,12 @@
 
             // Render final HTML
             detailContainer.innerHTML = `
-              <h1>#${placement} - ${level.name}</h1>
-              <p>by ${userMap[level.creators[0]] || level.creators[0]}, verified by ${userMap[level.verifier] || level.verifier}</p>
+              <h1 style="font-family: 'Montserrat'; font-size: 36px;">
+                #${placement} - ${level.name}
+              </h1>
+              <p style="font-family: 'Montserrat'; font-size: 18px;">
+                by ${userMap[level.creators[0]] || level.creators[0]}, verified by ${userMap[level.verifier] || level.verifier}
+              </p>
               <div class="video-container">
                 <iframe width="640" height="360"
                         src="https://www.youtube.com/embed/${level.verification}?rel=0"
