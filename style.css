@@ -87,10 +87,10 @@ body::before {
     background-size: cover;
 }
 .link-container a[href*="discord.com"]::before {
-    background-image: url('./resources/logos/discord.png');
+    background-image: url('/resources/logos/discord.png');
 }
 .link-container a[href*="maurice-list"]::before {
-    background-image: url('./resources/icons/maurice.png');
+    background-image: url('/resources/icons/maurice.png');
 }
 .link-container h3 {
     margin: 0px 0;
