@@ -45,14 +45,14 @@
         } else {
           // First, also fetch changelog.json to show "Position History"
           Promise.all([
-            fetch("/maurice-list/resources/data/users.json").then(r => r.json()),
-            fetch("/maurice-list/resources/data/levels.json").then(r => r.json()),
-            fetch("/maurice-list/resources/data/changelog.json").then(r => r.json())
+            fetch("/resources/data/users.json").then(r => r.json()),
+            fetch("/resources/data/levels.json").then(r => r.json()),
+            fetch("/resources/data/changelog.json").then(r => r.json())
           ])
           .then(([userMap, levelIds, changelogData]) => {
             return Promise.all(
               levelIds.map(id =>
-                fetch(`/maurice-list/resources/data/levels/${id}.json`)
+                fetch(`/resources/data/levels/${id}.json`)
                   .then(resp => resp.json())
                   .catch(error => {
                     console.error(`Error loading level ${id}:`, error);

@@ -1,3 +1,3 @@
 # Maurice Challenge List
 
-Offiial repository
+Official repository
