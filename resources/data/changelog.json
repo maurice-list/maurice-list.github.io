@@ -28,5 +28,15 @@
         "above": "schweinepanzer",
         "below": null,
         "reason": "Added to list"
+    },
+    {
+        "date": 1739304969,
+        "action": "placed",
+        "name": "blade_of_future",
+        "from_rank": null,
+        "to_rank": 1,
+        "above": "atom_frass_circles",
+        "below": null,
+        "reason": "Added to list"
     }
 ]
