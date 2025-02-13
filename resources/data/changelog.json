@@ -38,5 +38,15 @@
         "above": "atom_frass_circles",
         "below": null,
         "reason": "Added to list"
+    },
+    {
+        "date": 1739481862,
+        "action": "placed",
+        "name": "toerken_challenge",
+        "from_rank": null,
+        "to_rank": 2,
+        "above": "atom_frass_circles",
+        "below": "blade_of_future",
+        "reason": "Added to list"
     }
 ]
