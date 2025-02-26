@@ -48,5 +48,15 @@
         "above": "atom_frass_circles",
         "below": "blade_of_future",
         "reason": "Added to list"
+    },
+    {
+        "date": 1740585232,
+        "action": "placed",
+        "name": "houdenansturm_challe",
+        "from_rank": null,
+        "to_rank": 6,
+        "above": null,
+        "below": "jonas_challenge",
+        "reason": "Added to list"
     }
 ]
