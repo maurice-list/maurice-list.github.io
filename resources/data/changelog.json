@@ -58,5 +58,15 @@
         "above": null,
         "below": "jonas_challenge",
         "reason": "Added to list"
+    },
+    {
+        "date": 1742228269,
+        "action": "placed",
+        "name": "schweinepanzer_x",
+        "from_rank": null,
+        "to_rank": 3,
+        "above": "atom_frass_circles",
+        "below": "toerken_challenge",
+        "reason": "Added to list"
     }
 ]
