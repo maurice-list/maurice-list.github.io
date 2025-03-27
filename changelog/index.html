@@ -51,16 +51,23 @@
             fetch('/resources/data/levels.json').then(response => response.json())
         ])
         .then(([changelogData, levelsData]) => {
-            // Create a map of level IDs to level names
-            const levelMap = {};
-            levelsData.forEach(levelId => {
+            // Fetch all level details and populate the levelMap
+            const levelFetchPromises = levelsData.map(levelId =>
                 fetch(`/resources/data/levels/${levelId}.json`)
                     .then(response => response.json())
-                    .then(level => {
-                        levelMap[levelId] = level.name;
-                    });
-            });
+                    .then(level => ({ id: levelId, name: level.name }))
+            );
 
+            return Promise.all(levelFetchPromises).then(levels => {
+                const levelMap = levels.reduce((map, level) => {
+                    map[level.id] = level.name;
+                    return map;
+                }, {});
+
+                return { changelogData, levelMap };
+            });
+        })
+        .then(({ changelogData, levelMap }) => {
             // Sort the changelog entries by date in descending order
             changelogData.sort((a, b) => b.date - a.date);
 
@@ -83,7 +90,9 @@
                 const levelName = levelMap[entry.name] || entry.name;
                 let details = '';
                 if (entry.action === 'placed') {
-                    if (entry.above) {
+                    if (entry.above && entry.below) {
+                        details = `Placed above ${levelMap[entry.above] || entry.above} and below ${levelMap[entry.below] || entry.below}`;
+                    } else if (entry.above) {
                         details = `Placed above ${levelMap[entry.above] || entry.above}`;
                     } else if (entry.below) {
                         details = `Placed below ${levelMap[entry.below] || entry.below}`;

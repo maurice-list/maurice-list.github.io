@@ -45,7 +45,6 @@
         if (isNaN(placement) || placement < 1) {
           detailContainer.innerText = "Invalid placement parameter.";
         } else {
-          // First, also fetch changelog.json to show "Position History"
           Promise.all([
             fetch("/resources/data/users.json").then(r => r.json()),
             fetch("/resources/data/levels.json").then(r => r.json()),
@@ -72,12 +71,16 @@
             const level = validLevels[placement - 1];
             const fileId = levelIds[placement - 1];
 
+            // Determine navigation links
+            const prevPlacement = placement > 1 ? placement - 1 : null;
+            const nextPlacement = placement < validLevels.length ? placement + 1 : null;
+
             // Update the document title with the level name:
             document.title = `#${placement} - ${level.name}`;
 
             const historyEntries = changelogData.filter(entry => entry.name === fileId);
 
-            // ...build your historyHtml using 'historyEntries'...
+            // Build "Position History" HTML
             let historyHtml = "";
             if (historyEntries.length > 0) {
               historyHtml = `
@@ -95,7 +98,6 @@
                     </thead>
                     <tbody>
               `;
-              console.log(historyEntries);
               historyEntries.forEach(h => {
                 historyHtml += `
                       <tr>
@@ -112,7 +114,7 @@
                 </div>
               `;
             } else {
-              historyHtml = `<h2 style="font-family: Calibri>Position History</h2><p>No history found.</p>`;
+              historyHtml = `<h2 style="font-family: Calibri">Position History</h2><p>No history found.</p>`;
             }
 
             // Build "Records" table or "No records yet!"
@@ -148,10 +150,12 @@
               recordsHtml = `<h2>Records</h2><p>No records yet!</p>`;
             }
 
-            // Render final HTML
+            // Render final HTML with navigation arrows
             detailContainer.innerHTML = `
               <h1 style="font-family: 'Montserrat'; font-size: 36px;">
+                ${prevPlacement ? `<a href="?placement=${prevPlacement}" style="text-decoration: none;">⬅</a>` : ""}
                 #${placement} - ${level.name}
+                ${nextPlacement ? `<a href="?placement=${nextPlacement}" style="text-decoration: none;">➡</a>` : ""}
               </h1>
               <p style="font-family: 'Montserrat'; font-size: 18px;">
                 by ${userMap[level.creators[0]] || level.creators[0]}, verified by ${userMap[level.verifier] || level.verifier}
