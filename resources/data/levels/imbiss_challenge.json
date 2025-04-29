@@ -1,0 +1,25 @@
+{
+	"id": 117972432,
+	"name": "imbiss challenge",
+	"tags": [
+	],
+	"creators": [
+		"6"
+	],
+	"verifier": "6",
+	"verification": "yPC1uxKMHus",
+	"percentToQualify": 100,
+	"song": 726455,
+	"records": [
+		{
+			"user": "1",
+			"link": "QOmxkwVat4o",
+			"percent": 100
+		},
+        {
+            "user": "3",
+            "link": "UUkt7QK9rCA",
+            "percent": 100
+        }
+	]
+}

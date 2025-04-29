@@ -150,6 +150,9 @@
               recordsHtml = `<h2>Records</h2><p>No records yet!</p>`;
             }
 
+            // Calculate list points dynamically
+            const listPoints = calculatePoints(placement, validLevels.length);
+
             // Render final HTML with navigation arrows
             detailContainer.innerHTML = `
               <h1 style="font-family: 'Montserrat'; font-size: 36px;">
@@ -168,6 +171,20 @@
                         allowfullscreen>
                 </iframe>
               </div>
+              <div style="margin-top: 20px; font-family: 'Montserrat'; font-size: 18px; display: flex; justify-content: center; gap: 20px;">
+                <div style="text-align: center;">
+                  <p><strong>List Points</strong></p>
+                  <p>${listPoints}</p>
+                </div>
+                <div style="text-align: center;">
+                  <p><strong>Level ID</strong></p>
+                  <p><a href="https://gdbrowser.com/${fileId}" target="_blank" style="text-decoration: none; color: blue;">${level.id}</a></p>
+                </div>
+                <div style="text-align: center;">
+                  <p><strong>Song ID</strong></p>
+                  <p><a href="https://www.newgrounds.com/audio/listen/${level.song}" target="_blank" style="text-decoration: none; color: blue;">${level.song || "N/A"}</a></p>
+                </div>
+              </div>
               ${historyHtml}
               ${recordsHtml}
               <a class="back-link" href="../">Back to list</a>
@@ -184,6 +201,14 @@
       function togglePositionHistory() {
         const ph = document.getElementById('position-history');
         ph.style.display = (ph.style.display === 'none') ? 'block' : 'none';
+      }
+
+      // Function to calculate points based on placement
+      function calculatePoints(placement, totalLevels, topPoints = 100, bottomPoints = 50) {
+        const range = Math.log(totalLevels); // Logarithmic range
+        const logPlacement = Math.log(placement); // Logarithmic placement
+        const normalized = logPlacement / range; // Normalize placement to [0, 1]
+        return Math.round(topPoints - normalized * (topPoints - bottomPoints));
       }
     </script>
   </body>
