@@ -108,5 +108,15 @@
         "above": null,
         "below": "imbiss_raid",
         "reason": "Added to list"
+    },
+    {
+        "date": 1746104515,
+        "action": "placed",
+        "name": "isa_baddie",
+        "from_rank": null,
+        "to_rank": 6,
+        "above": "isa_never_clear",
+        "below": "atom_frass_circles",
+        "reason": "Added to list"
     }
 ]
