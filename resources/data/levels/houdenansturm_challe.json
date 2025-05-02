@@ -11,5 +11,15 @@
 	"percentToQualify": 100,
 	"song": 1202803,
 	"records": [
+		{
+			"user": "2",
+			"link": "qHIPeyJpKUk",
+			"percent": 100
+		},
+		{
+			"user": "4",
+			"link": "thHr25cMnsM",
+			"percent": 100
+		}
 	]
 }
