@@ -128,5 +128,35 @@
         "above": "schweinepanzer_x",
         "below": "toerken_challenge",
         "reason": "Added to list"
+    },
+    {
+        "date": 1747248777,
+        "action": "swapped",
+        "name": "imbiss_raid",
+        "from_rank": 12,
+        "to_rank": 11,
+        "above": "houdenansturm_challe",
+        "below": "jonas_challenge",
+        "reason": "Swapped"
+    },
+    {
+        "date": 1747248777,
+        "action": "swapped",
+        "name": "isa_baddie",
+        "from_rank": 7,
+        "to_rank": 6,
+        "above": "atom_frass_circles",
+        "below": "mayodevice_challenge",
+        "reason": "Swapped"
+    },
+        {
+        "date": 1747249066,
+        "action": "swapped",
+        "name": "toerken_challenge",
+        "from_rank": 2,
+        "to_rank": 1,
+        "above": "blade_of_future",
+        "below": null,
+        "reason": "Swapped"
     }
 ]
