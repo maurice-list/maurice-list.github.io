@@ -149,7 +149,7 @@
         "below": "mayodevice_challenge",
         "reason": "Swapped"
     },
-        {
+    {
         "date": 1747249066,
         "action": "swapped",
         "name": "toerken_challenge",
@@ -158,5 +158,15 @@
         "above": "blade_of_future",
         "below": null,
         "reason": "Swapped"
+    },
+    {
+        "date": 1747327537,
+        "action": "placed",
+        "name": "vorhaut_challenge",
+        "from_rank": null,
+        "to_rank": 13,
+        "above": "imbiss_challenge",
+        "below": "houdenansturm_challe",
+        "reason": "Added to list"
     }
 ]
