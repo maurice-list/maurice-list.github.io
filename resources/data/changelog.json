@@ -168,5 +168,15 @@
         "above": "imbiss_challenge",
         "below": "houdenansturm_challe",
         "reason": "Added to list"
+    },
+    {
+        "date": 1748192581,
+        "action": "placed",
+        "name": "ralf_schumacher",
+        "from_rank": null,
+        "to_rank": 7,
+        "above": "atom_frass_circles",
+        "below": "isa_baddie",
+        "reason": "Added to list"
     }
 ]

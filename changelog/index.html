@@ -98,6 +98,9 @@
                         details = `Placed below ${levelMap[entry.below] || entry.below}`;
                     }
                 }
+                if (entry.action === 'swapped') {
+                    details = `Swapped with ${levelMap[entry.above] || entry.above}`;
+                }
                 changelogHtml += `
                     <tr>
                         <td>${new Date(entry.date * 1000).toLocaleDateString()}</td>
