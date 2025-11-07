@@ -98,8 +98,16 @@
                         details = `Placed below ${levelMap[entry.below] || entry.below}`;
                     }
                 }
-                if (entry.action === 'swapped') {
+                else if (entry.action === 'swapped') {
                     details = `Swapped with ${levelMap[entry.above] || entry.above}`;
+                }
+                else if (entry.action === 'moved') {
+                    if (entry.to_rank === 0) {
+                        entry.to_rank = '-';
+                        details = `Removed from the list`;
+                    } else {
+                        details = `Moved above ${levelMap[entry.above] || entry.above} and below ${levelMap[entry.below] || entry.below}`;
+                    }
                 }
                 changelogHtml += `
                     <tr>

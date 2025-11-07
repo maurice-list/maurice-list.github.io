@@ -178,5 +178,15 @@
         "above": "atom_frass_circles",
         "below": "isa_baddie",
         "reason": "Added to list"
+    },
+    {
+        "date": 1762533489,
+        "action": "moved",
+        "name": "toerken_challenge",
+        "from_rank": 1,
+        "to_rank": 0,
+        "above": null,
+        "below": null,
+        "reason": "Removed from list"
     }
 ]
