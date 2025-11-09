@@ -188,5 +188,25 @@
         "above": null,
         "below": null,
         "reason": "Removed from list"
+    },
+    {
+        "date": 1762713453,
+        "action": "placed",
+        "name": "gammel_gandalf",
+        "from_rank": null,
+        "to_rank": 6,
+        "above": "ralf_schumacher",
+        "below": "isa_baddie",
+        "reason": "Added to list"
+    },
+    {
+        "date": 1762713544,
+        "action": "placed",
+        "name": "jonas_callenge",
+        "from_rank": null,
+        "to_rank": 12,
+        "above": "imbiss_raid",
+        "below": "jonas_challenge",
+        "reason": "Added to list"
     }
 ]
