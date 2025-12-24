@@ -208,5 +208,35 @@
         "above": "imbiss_raid",
         "below": "jonas_challenge",
         "reason": "Added to list"
+    },
+    {
+        "date": 1766538190,
+        "action": "placed",
+        "name": "joschua_challenge",
+        "from_rank": null,
+        "to_rank": 15,
+        "above": "vorhaut_challenge",
+        "below": "houdenansturm_challe",
+        "reason": "Added to list"
+    },
+    {
+        "date": 1766538386,
+        "action": "placed",
+        "name": "alles_ausser",
+        "from_rank": null,
+        "to_rank": 4,
+        "above": "mayodevice_challenge",
+        "below": "schweinepanzer_x",
+        "reason": "Added to list"
+    },
+    {
+        "date": 1766538424,
+        "action": "swapped",
+        "name": "isa_baddie",
+        "from_rank": 6,
+        "to_rank": 5,
+        "above": "mayodevice_challenge",
+        "below": "alles_ausser",
+        "reason": "Swapped"
     }
 ]

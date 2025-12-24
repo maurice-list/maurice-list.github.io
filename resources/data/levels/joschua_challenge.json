@@ -1,0 +1,25 @@
+{
+	"id": 128532052,
+	"name": "joschua challenge",
+	"tags": [
+	],
+	"creators": [
+		"6"
+	],
+	"verifier": "6",
+	"verification": "pHboUEGcoX0",
+	"percentToQualify": 100,
+	"song": 10007151,
+	"records": [
+		{
+			"user": "3",
+			"link": "youtube_video_id",
+			"percent": 100
+		},
+        {
+			"user": "1",
+			"link": "iaAXeTHKdzU",
+			"percent": 100
+		}
+	]
+}
