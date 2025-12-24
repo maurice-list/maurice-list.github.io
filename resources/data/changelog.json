@@ -238,5 +238,25 @@
         "above": "mayodevice_challenge",
         "below": "alles_ausser",
         "reason": "Swapped"
+    },
+    {
+        "date": 1766538521,
+        "action": "moved",
+        "name": "imbiss_raid",
+        "from_rank": 14,
+        "to_rank": 0,
+        "above": null,
+        "below": null,
+        "reason": "Removed from list"
+    },
+    {
+        "date": 1766538521,
+        "action": "moved",
+        "name": "houdenansturm_challe",
+        "from_rank": 15,
+        "to_rank": 0,
+        "above": null,
+        "below": null,
+        "reason": "Removed from list"
     }
 ]
