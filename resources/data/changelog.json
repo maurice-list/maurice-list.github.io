@@ -258,5 +258,25 @@
         "above": null,
         "below": null,
         "reason": "Removed from list"
+    },
+    {
+        "date": 1766868235,
+        "action": "added",
+        "name": "schweinepanzer_redux",
+        "from_rank": 0,
+        "to_rank": 1,
+        "above": "blade_of_future",
+        "below": null,
+        "reason": "Added to list"
+    },
+    {
+        "date": 1766868234,
+        "action": "swapped",
+        "name": "jonas_challenge",
+        "from_rank": 13,
+        "to_rank": 12,
+        "above": "schweinepanzer",
+        "below": "isa_never_clear",
+        "reason": "Swapped"
     }
 ]
