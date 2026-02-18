@@ -8,10 +8,28 @@
     <link rel="icon" href="/resources/icons/maurice.png">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1908323352197629"
      crossorigin="anonymous"></script>
+    <script>if (document.cookie.includes('darkMode=1')) document.documentElement.classList.add('dark');</script>
     <style>
+        :root {
+            --bg:         #ffffff;
+            --text:       #000000;
+            --text-gray:  gray;
+            --border:     #ddd;
+            --table-head: #f2f2f2;
+        }
+        html.dark body {
+            --bg:           #1e1e1e;
+            --text:         #e0e0e0;
+            --text-gray:    #888888;
+            --border:       #555555;
+            --table-head:   #2a2a2a;
+        }
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+            background-color: var(--bg);
+            color: var(--text);
+            transition: background-color 0.3s, color 0.3s;
         }
         .changelog {
             margin-bottom: 20px;
@@ -20,7 +38,7 @@
             margin-bottom: 10px;
         }
         .date {
-            color: gray;
+            color: var(--text-gray);
             font-size: 0.9em;
         }
         .details {
@@ -32,15 +50,44 @@
             margin-bottom: 20px;
         }
         th, td {
-            border: 1px solid #ddd;
+            border: 1px solid var(--border);
             padding: 8px;
+            color: var(--text);
         }
         th {
-            background-color: #f2f2f2;
+            background-color: var(--table-head);
+        }
+
+        #dark-toggle {
+            position: fixed;
+            top: 14px;
+            right: 18px;
+            background: none;
+            border: 2px solid var(--text);
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 20px;
+            cursor: pointer;
+            color: var(--text);
+            transition: border-color 0.3s, color 0.3s;
+            z-index: 999;
         }
     </style>
 </head>
 <body>
+    <button id="dark-toggle" onclick="toggleDark()" title="Toggle dark mode">🌙</button>
+    <script>
+        function applyDark(dark) {
+            document.documentElement.classList.toggle('dark', dark);
+            document.getElementById('dark-toggle').textContent = dark ? '☀️' : '🌙';
+        }
+        function toggleDark() {
+            const isDark = !document.documentElement.classList.contains('dark');
+            document.cookie = 'darkMode=' + (isDark ? '1' : '0') + '; path=/; max-age=31536000';
+            applyDark(isDark);
+        }
+        applyDark(document.documentElement.classList.contains('dark'));
+    </script>
     <h1>Changelog</h1>
     <div id="changelog-container"></div>
     <script>
@@ -51,7 +98,6 @@
             fetch('/resources/data/levels.json').then(response => response.json())
         ])
         .then(([changelogData, levelsData]) => {
-            // Fetch all level details and populate the levelMap
             const levelFetchPromises = levelsData.map(levelId =>
                 fetch(`/resources/data/levels/${levelId}.json`)
                     .then(response => response.json())
@@ -68,10 +114,8 @@
             });
         })
         .then(({ changelogData, levelMap }) => {
-            // Sort the changelog entries by date in descending order
             changelogData.sort((a, b) => b.date - a.date);
 
-            // Build the HTML for the changelog entries
             let changelogHtml = `
                 <table>
                     <thead>
@@ -125,7 +169,6 @@
                 </table>
             `;
 
-            // Insert the changelog HTML into the container
             changelogContainer.innerHTML = changelogHtml;
         })
         .catch(error => {

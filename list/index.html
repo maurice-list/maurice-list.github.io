@@ -9,12 +9,37 @@
     <link rel="icon" href="/resources/icons/maurice.png">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1908323352197629"
      crossorigin="anonymous"></script>
+    <script>if (document.cookie.includes('darkMode=1')) document.documentElement.classList.add('dark');</script>
     <style>
+      :root {
+          --bg:         #ffffff;
+          --text:       #000000;
+          --text-sub:   #555555;
+          --link:       blue;
+          --border:     #ddd;
+          --table-head: #f2f2f2;
+      }
+      html.dark body {
+          --bg:           #1e1e1e;
+          --text:         #e0e0e0;
+          --text-sub:     #aaaaaa;
+          --link:         #7eb8f7;
+          --border:       #555555;
+          --table-head:   #2a2a2a;
+      }
       body {
         font-family: Arial, sans-serif;
         text-align: center;
         margin: 20px;
+        background-color: var(--bg);
+        color: var(--text);
+        transition: background-color 0.3s, color 0.3s;
       }
+      a { color: var(--link); }
+      table { border-color: var(--border); }
+      th, td { border-color: var(--border) !important; }
+      th { background-color: var(--table-head) !important; color: var(--text); }
+      td { color: var(--text); }
       .level-detail {
         max-width: 600px;
         margin: 50px auto;
@@ -23,15 +48,43 @@
         margin-top: 20px;
         display: inline-block;
         font-size: 16px;
-        color: blue;
+        color: var(--link);
         text-decoration: none;
       }
       .back-link:hover {
         text-decoration: underline;
       }
+
+      #dark-toggle {
+          position: fixed;
+          top: 14px;
+          right: 18px;
+          background: none;
+          border: 2px solid var(--text);
+          border-radius: 20px;
+          padding: 4px 12px;
+          font-size: 20px;
+          cursor: pointer;
+          color: var(--text);
+          transition: border-color 0.3s, color 0.3s;
+          z-index: 999;
+      }
     </style>
   </head>
   <body>
+    <button id="dark-toggle" onclick="toggleDark()" title="Toggle dark mode">🌙</button>
+    <script>
+      function applyDark(dark) {
+          document.documentElement.classList.toggle('dark', dark);
+          document.getElementById('dark-toggle').textContent = dark ? '☀️' : '🌙';
+      }
+      function toggleDark() {
+          const isDark = !document.documentElement.classList.contains('dark');
+          document.cookie = 'darkMode=' + (isDark ? '1' : '0') + '; path=/; max-age=31536000';
+          applyDark(isDark);
+      }
+      applyDark(document.documentElement.classList.contains('dark'));
+    </script>
     <div id="level-detail" class="level-detail">Loading level details...</div>
     <script>
       const detailContainer = document.getElementById("level-detail");
@@ -71,16 +124,13 @@
             const level = validLevels[placement - 1];
             const fileId = levelIds[placement - 1];
 
-            // Determine navigation links
             const prevPlacement = placement > 1 ? placement - 1 : null;
             const nextPlacement = placement < validLevels.length ? placement + 1 : null;
 
-            // Update the document title with the level name:
             document.title = `#${placement} - ${level.name}`;
 
             const historyEntries = changelogData.filter(entry => entry.name === fileId);
 
-            // Build "Position History" HTML
             let historyHtml = "";
             if (historyEntries.length > 0) {
               historyHtml = `
@@ -150,10 +200,8 @@
               recordsHtml = `<h2>Records</h2><p>No records yet!</p>`;
             }
 
-            // Calculate list points dynamically
             const listPoints = calculatePoints(placement, validLevels.length);
 
-            // Render final HTML with navigation arrows
             detailContainer.innerHTML = `
               <h1 style="font-family: 'Montserrat'; font-size: 36px;">
                 ${prevPlacement ? `<a href="?placement=${prevPlacement}" style="text-decoration: none;">⬅</a>` : ""}
@@ -197,17 +245,15 @@
         }
       }
 
-      // Simple toggle function for the position history
       function togglePositionHistory() {
         const ph = document.getElementById('position-history');
         ph.style.display = (ph.style.display === 'none') ? 'block' : 'none';
       }
 
-      // Function to calculate points based on placement
       function calculatePoints(placement, totalLevels, topPoints = 100, bottomPoints = 50) {
-        const range = Math.log(totalLevels); // Logarithmic range
-        const logPlacement = Math.log(placement); // Logarithmic placement
-        const normalized = logPlacement / range; // Normalize placement to [0, 1]
+        const range = Math.log(totalLevels);
+        const logPlacement = Math.log(placement);
+        const normalized = logPlacement / range;
         return Math.round(topPoints - normalized * (topPoints - bottomPoints));
       }
     </script>

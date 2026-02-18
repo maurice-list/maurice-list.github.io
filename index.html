@@ -9,12 +9,38 @@
     <link rel="icon" href="/resources/icons/maurice.png">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1908323352197629"
      crossorigin="anonymous"></script>
+    <script>if (document.cookie.includes('darkMode=1')) document.documentElement.classList.add('dark');</script>
     <style>
-        /* CSS Reset */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+
+        :root {
+            --bg:           #ffffff;
+            --text:         #000000;
+            --text-sub:     rgb(65, 65, 65);
+            --header-bg:    lightcoral;
+            --header-text:  #000000;
+            --border:       gray;
+            --item-bg:      #ffffff;
+        }
+
+        html.dark body {
+            --bg:           #1e1e1e;
+            --text:         #e0e0e0;
+            --text-sub:     #aaaaaa;
+            --header-bg:    #3a3a3a;
+            --header-text:  #f0f0f0;
+            --border:       #555555;
+            --item-bg:      #2a2a2a;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            transition: background-color 0.3s, color 0.3s;
         }
 
         .demon-list {
@@ -28,11 +54,13 @@
             align-items: center;
             margin: 20px 0;
             padding: 10px;
-            border: 2px solid gray;
+            border: 2px solid var(--border);
             border-radius: 5px;
             width: 80%;
             max-width: 800px;
             min-height: 10vh;
+            background-color: var(--item-bg);
+            transition: background-color 0.3s, border-color 0.3s;
         }
         .demon-item img {
             object-fit: cover;
@@ -43,14 +71,14 @@
             flex-direction: column;
         }
         .demon-info a {
-            color: black;
+            color: var(--text);
             text-decoration: none;
             font-size: 24px;
             font-weight: bolder;
             font-family: "Montserrat";
         }
         .demon-info span {
-            color: rgb(65, 65, 65);
+            color: var(--text-sub);
             font-size: 18px;
             font-family: "Montserrat";
             font-weight: bold;
@@ -61,8 +89,9 @@
             align-items: center;
             justify-content: space-between;
             padding: 20px;
-            border-bottom: 2px solid lightcoral;
-            background-color: lightcoral;
+            border-bottom: 2px solid var(--header-bg);
+            background-color: var(--header-bg);
+            transition: background-color 0.3s;
         }
         .header-left {
             display: flex;
@@ -77,14 +106,33 @@
             font-size: 24px;
             font-weight: bolder;
             text-decoration: none;
-            color: black;
+            color: var(--header-text);
             margin-left: 20px;
+        }
+        h1 {
+            color: var(--header-text);
         }
         .divider {
             width: 100%;
             height: 2px;
             background-color: transparent;
             margin: 20px 0;
+        }
+
+        #dark-toggle {
+            background: none;
+            border: 2px solid var(--header-text);
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 20px;
+            cursor: pointer;
+            margin-left: 20px;
+            color: var(--header-text);
+            transition: border-color 0.3s, color 0.3s;
+            line-height: 1;
+        }
+        #dark-toggle:hover {
+            opacity: 0.8;
         }
     </style>
 </head>
@@ -97,11 +145,25 @@
         <div class="header-right">
             <a href="/leaderboard">Leaderboard</a>
             <a href="/changelog">Changelog</a>
+            <button id="dark-toggle" onclick="toggleDark()" title="Toggle dark mode">🌙</button>
         </div>
     </div>
     <div class="divider"></div>
     <div class="demon-list">
     </div>
+    <script>
+        const btn = document.getElementById('dark-toggle');
+        function applyDark(dark) {
+            document.documentElement.classList.toggle('dark', dark);
+            btn.textContent = dark ? '☀️' : '🌙';
+        }
+        function toggleDark() {
+            const isDark = !document.documentElement.classList.contains('dark');
+            document.cookie = 'darkMode=' + (isDark ? '1' : '0') + '; path=/; max-age=31536000';
+            applyDark(isDark);
+        }
+        applyDark(document.documentElement.classList.contains('dark'));
+    </script>
     <script>
         const container = document.querySelector('.demon-list');
 

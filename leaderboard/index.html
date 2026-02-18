@@ -6,10 +6,26 @@
     <title>Leaderboard</title>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1908323352197629"
      crossorigin="anonymous"></script>
+    <script>if (document.cookie.includes('darkMode=1')) document.documentElement.classList.add('dark');</script>
     <style>
+        :root {
+            --bg:         #ffffff;
+            --text:       #000000;
+            --border:     #ddd;
+            --table-head: #f2f2f2;
+        }
+        html.dark body {
+            --bg:           #1e1e1e;
+            --text:         #e0e0e0;
+            --border:       #555555;
+            --table-head:   #2a2a2a;
+        }
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
+            background-color: var(--bg);
+            color: var(--text);
+            transition: background-color 0.3s, color 0.3s;
         }
         table {
             width: 100%;
@@ -17,52 +33,78 @@
             margin-bottom: 20px;
         }
         th, td {
-            border: 1px solid #ddd;
+            border: 1px solid var(--border);
             padding: 8px;
             text-align: center;
+            color: var(--text);
         }
         th {
-            background-color: #f2f2f2;
+            background-color: var(--table-head);
         }
         h1 {
             text-align: center;
             margin-bottom: 20px;
         }
+
+        #dark-toggle {
+            position: fixed;
+            top: 14px;
+            right: 18px;
+            background: none;
+            border: 2px solid var(--text);
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 20px;
+            cursor: pointer;
+            color: var(--text);
+            transition: border-color 0.3s, color 0.3s;
+            z-index: 999;
+        }
     </style>
 </head>
 <body>
+    <button id="dark-toggle" onclick="toggleDark()" title="Toggle dark mode">🌙</button>
+    <script>
+        function applyDark(dark) {
+            document.documentElement.classList.toggle('dark', dark);
+            document.getElementById('dark-toggle').textContent = dark ? '☀️' : '🌙';
+        }
+        function toggleDark() {
+            const isDark = !document.documentElement.classList.contains('dark');
+            document.cookie = 'darkMode=' + (isDark ? '1' : '0') + '; path=/; max-age=31536000';
+            applyDark(isDark);
+        }
+        applyDark(document.documentElement.classList.contains('dark'));
+    </script>
     <h1>Leaderboard</h1>
     <div id="leaderboard-container">Loading leaderboard...</div>
     <script>
         const leaderboardContainer = document.getElementById("leaderboard-container");
 
-        // Function to calculate points based on placement
         function calculatePoints(placement, totalLevels, topPoints = 100, bottomPoints = 50) {
-            const range = Math.log(totalLevels); // Logarithmic range
-            const logPlacement = Math.log(placement); // Logarithmic placement
-            const normalized = logPlacement / range; // Normalize placement to [0, 1]
+            const range = Math.log(totalLevels);
+            const logPlacement = Math.log(placement);
+            const normalized = logPlacement / range;
             return Math.round(topPoints - normalized * (topPoints - bottomPoints));
         }
 
-        // Fetch data for leaderboard
         Promise.all([
             fetch("/resources/data/users.json").then(response => response.json()),
             fetch("/resources/data/levels.json").then(response => response.json())
         ])
         .then(([userMap, levelIds]) => {
-            // Fetch all level details
             const levelFetchPromises = levelIds.map(levelId =>
                 fetch(`/resources/data/levels/${levelId}.json`)
                     .then(response => response.json())
                     .catch(error => {
                         console.error(`Error loading level ${levelId}:`, error);
-                        return null; // Skip levels that fail to load
+                        return null;
                     })
             );
 
             return Promise.all(levelFetchPromises).then(levels => ({
                 userMap,
-                levels: levels.filter(level => level !== null) // Filter out null levels
+                levels: levels.filter(level => level !== null)
             }));
         })
         .then(({ userMap, levels }) => {
@@ -74,14 +116,13 @@
                 let totalPoints = 0;
 
                 const beatenLevels = levels.filter(level => {
-                    // Check if the user is in the records or is the verifier
                     const isInRecords = level.records && level.records.some(record => record.user === userId);
                     const isVerifier = level.verifier === userId;
                     return isInRecords || isVerifier;
                 });
 
                 beatenLevels.forEach(level => {
-                    const placement = levels.indexOf(level) + 1; // Get placement (1-based index)
+                    const placement = levels.indexOf(level) + 1;
                     totalPoints += calculatePoints(placement, totalLevels);
                 });
 
@@ -97,10 +138,8 @@
                 };
             });
 
-            // Sort leaderboard by total points in descending order
             leaderboard.sort((a, b) => b.totalPoints - a.totalPoints);
 
-            // Build leaderboard HTML
             let leaderboardHtml = `
                 <table>
                     <thead>
@@ -130,7 +169,6 @@
                 </table>
             `;
 
-            // Insert leaderboard HTML into the container
             leaderboardContainer.innerHTML = leaderboardHtml;
         })
         .catch(error => {
