@@ -278,5 +278,15 @@
         "above": "schweinepanzer",
         "below": "isa_never_clear",
         "reason": "Swapped"
+    },
+    {
+        "date": 1771382330,
+        "action": "placed",
+        "name": "mark_16",
+        "from_rank": 0,
+        "to_rank": 6,
+        "above": "mayodevice_challenge",
+        "below": "isa_baddie",
+        "reason": "Added to list"
     }
 ]
