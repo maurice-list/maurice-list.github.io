@@ -31,23 +31,19 @@
             color: var(--text);
             transition: background-color 0.3s, color 0.3s;
         }
-        .changelog {
-            margin-bottom: 20px;
-        }
-        .entry {
-            margin-bottom: 10px;
-        }
-        .date {
-            color: var(--text-gray);
-            font-size: 0.9em;
-        }
-        .details {
-            margin-left: 20px;
+        .changelog { margin-bottom: 20px; }
+        .entry { margin-bottom: 10px; }
+        .date { color: var(--text-gray); font-size: 0.9em; }
+        .details { margin-left: 20px; }
+        .table-scroll {
+            width: 100%;
+            overflow-x: auto;
         }
         table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 20px;
+            min-width: 500px;
         }
         th, td {
             border: 1px solid var(--border);
@@ -57,7 +53,6 @@
         th {
             background-color: var(--table-head);
         }
-
         #dark-toggle {
             position: fixed;
             top: 14px;
@@ -71,6 +66,10 @@
             color: var(--text);
             transition: border-color 0.3s, color 0.3s;
             z-index: 999;
+        }
+        @media (max-width: 600px) {
+            body { margin: 12px; }
+            th, td { font-size: 13px; padding: 6px 4px; }
         }
     </style>
 </head>
@@ -117,6 +116,7 @@
             changelogData.sort((a, b) => b.date - a.date);
 
             let changelogHtml = `
+                <div class="table-scroll">
                 <table>
                     <thead>
                         <tr>
@@ -167,6 +167,7 @@
             changelogHtml += `
                     </tbody>
                 </table>
+                </div>
             `;
 
             changelogContainer.innerHTML = changelogHtml;

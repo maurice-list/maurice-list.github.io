@@ -36,12 +36,12 @@
         transition: background-color 0.3s, color 0.3s;
       }
       a { color: var(--link); }
-      table { border-color: var(--border); }
+      table { border-color: var(--border); width: 100%; }
       th, td { border-color: var(--border) !important; }
       th { background-color: var(--table-head) !important; color: var(--text); }
       td { color: var(--text); }
       .level-detail {
-        max-width: 600px;
+        max-width: 660px;
         margin: 50px auto;
       }
       .back-link {
@@ -54,7 +54,22 @@
       .back-link:hover {
         text-decoration: underline;
       }
-
+      .video-wrapper {
+        position: relative;
+        width: 100%;
+        padding-bottom: 56.25%;
+        margin: 16px 0;
+      }
+      .video-wrapper iframe {
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        border: none;
+      }
+      .table-scroll {
+        width: 100%;
+        overflow-x: auto;
+      }
       #dark-toggle {
           position: fixed;
           top: 14px;
@@ -68,6 +83,10 @@
           color: var(--text);
           transition: border-color 0.3s, color 0.3s;
           z-index: 999;
+      }
+      @media (max-width: 600px) {
+        body { margin: 12px; }
+        .level-detail { margin: 40px auto; }
       }
     </style>
   </head>
@@ -137,7 +156,8 @@
                 <h2 style="font-family: Calibri">Position History</h2>
                 <a href="#" onclick="togglePositionHistory(); return false;">(Click to expand/collapse)</a>
                 <div id="position-history" style="display: none; margin-top: 10px;">
-                  <table style="width: 640px;" border="1" cellpadding="8" cellspacing="0">
+                  <div class="table-scroll">
+                  <table border="1" cellpadding="8" cellspacing="0">
                     <thead>
                       <tr>
                         <th>Date</th>
@@ -161,18 +181,19 @@
               historyHtml += `
                     </tbody>
                   </table>
+                  </div>
                 </div>
               `;
             } else {
               historyHtml = `<h2 style="font-family: Calibri">Position History</h2><p>No history found.</p>`;
             }
 
-            // Build "Records" table or "No records yet!"
             let recordsHtml = "";
             if (level.records && level.records.length > 0) {
               recordsHtml = `
                 <h2>Records</h2>
-                <table style="width: 640px;" border="1" cellpadding="8" cellspacing="0">
+                <div class="table-scroll">
+                <table border="1" cellpadding="8" cellspacing="0">
                   <thead>
                     <tr>
                       <th>Record Holder</th>
@@ -195,6 +216,7 @@
               recordsHtml += `
                   </tbody>
                 </table>
+                </div>
               `;
             } else {
               recordsHtml = `<h2>Records</h2><p>No records yet!</p>`;
@@ -203,34 +225,33 @@
             const listPoints = calculatePoints(placement, validLevels.length);
 
             detailContainer.innerHTML = `
-              <h1 style="font-family: 'Montserrat'; font-size: 36px;">
+              <h1 style="font-family: 'Montserrat'; font-size: clamp(22px, 5vw, 36px);">
                 ${prevPlacement ? `<a href="?placement=${prevPlacement}" style="text-decoration: none;">⬅</a>` : ""}
                 #${placement} - ${level.name}
                 ${nextPlacement ? `<a href="?placement=${nextPlacement}" style="text-decoration: none;">➡</a>` : ""}
               </h1>
-              <p style="font-family: 'Montserrat'; font-size: 18px;">
+              <p style="font-family: 'Montserrat'; font-size: clamp(14px, 3vw, 18px);">
                 by ${userMap[level.creators[0]] || level.creators[0]}, verified by ${userMap[level.verifier] || level.verifier}
               </p>
-              <div class="video-container">
-                <iframe width="640" height="360"
+              <div class="video-wrapper">
+                <iframe
                         src="https://www.youtube.com/embed/${level.verification}?rel=0"
-                        frameborder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                         allowfullscreen>
                 </iframe>
               </div>
-              <div style="margin-top: 20px; font-family: 'Montserrat'; font-size: 18px; display: flex; justify-content: center; gap: 20px;">
+              <div style="margin-top: 20px; font-family: 'Montserrat'; font-size: clamp(14px, 3vw, 18px); display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
                 <div style="text-align: center;">
                   <p><strong>List Points</strong></p>
                   <p>${listPoints}</p>
                 </div>
                 <div style="text-align: center;">
                   <p><strong>Level ID</strong></p>
-                  <p><a href="https://gdbrowser.com/${level.id}" target="_blank" style="text-decoration: none; color: blue;">${level.id}</a></p>
+                  <p><a href="https://gdbrowser.com/${level.id}" target="_blank" style="text-decoration: none;">${level.id}</a></p>
                 </div>
                 <div style="text-align: center;">
                   <p><strong>Song ID</strong></p>
-                  <p><a href="https://www.newgrounds.com/audio/listen/${level.song}" target="_blank" style="text-decoration: none; color: blue;">${level.song || "N/A"}</a></p>
+                  <p><a href="https://www.newgrounds.com/audio/listen/${level.song}" target="_blank" style="text-decoration: none;">${level.song || "N/A"}</a></p>
                 </div>
               </div>
               ${historyHtml}
