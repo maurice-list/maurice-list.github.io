@@ -284,7 +284,7 @@
         "action": "placed",
         "name": "mark_16",
         "from_rank": 0,
-        "to_rank": 6,
+        "to_rank": 7,
         "above": "mayodevice_challenge",
         "below": "isa_baddie",
         "reason": "Added to list"
