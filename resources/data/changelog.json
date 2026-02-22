@@ -261,7 +261,7 @@
     },
     {
         "date": 1766868235,
-        "action": "added",
+        "action": "placed",
         "name": "schweinepanzer_redux",
         "from_rank": 0,
         "to_rank": 1,
@@ -281,7 +281,7 @@
     },
     {
         "date": 1771382330,
-        "action": "added",
+        "action": "placed",
         "name": "mark_16",
         "from_rank": 0,
         "to_rank": 7,
