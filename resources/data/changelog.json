@@ -281,12 +281,42 @@
     },
     {
         "date": 1771382330,
-        "action": "placed",
+        "action": "added",
         "name": "mark_16",
         "from_rank": 0,
         "to_rank": 7,
         "above": "mayodevice_challenge",
         "below": "isa_baddie",
         "reason": "Added to list"
+    },
+    {
+        "date": 1771784360,
+        "action": "moved",
+        "name": "isa_baddie",
+        "from_rank": 6,
+        "to_rank": 8,
+        "above": "gammel_gandalf",
+        "below": "mayodevice_challenge",
+        "reason": "Moved"
+    },
+    {
+        "date": 1771784438,
+        "action": "moved",
+        "name": "ralf_schumacher",
+        "from_rank": 10,
+        "to_rank": 7,
+        "above": "mayodevice_challenge",
+        "below": "mark_16",
+        "reason": "Moved"
+    },
+    {
+        "date": 1771784504,
+        "action": "swapped",
+        "name": "jonas_callenge",
+        "from_rank": 15,
+        "to_rank": 14,
+        "above": "schweinepanzer",
+        "below": "jonas_challenge",
+        "reason": "Swapped"
     }
 ]
