@@ -318,5 +318,45 @@
         "above": "schweinepanzer",
         "below": "jonas_challenge",
         "reason": "Swapped"
+    },
+    {
+        "date": 1772056133,
+        "action": "placed",
+        "name": "suhi_of_gasio",
+        "from_rank": 0,
+        "to_rank": 16,
+        "above": "joschua_challenge",
+        "below": "schweinepanzer",
+        "reason": "Added to list"
+    },
+    {
+        "date": 1772056322,
+        "action": "placed",
+        "name": "suhi_gasio_wall",
+        "from_rank": 0,
+        "to_rank": 16,
+        "above": "suhi_of_gasio",
+        "below": "schweinepanzer",
+        "reason": "Added to list"
+    },
+    {
+        "date": 1772056433,
+        "action": "placed",
+        "name": "mauriceville_war",
+        "from_rank": 0,
+        "to_rank": 9,
+        "above": "isa_baddie",
+        "below": "mayodevice_challenge",
+        "reason": "Added to list"
+    },
+    {
+        "date": 1772056560,
+        "action": "swapped",
+        "name": "isa_never_clear",
+        "from_rank": 13,
+        "to_rank": 11,
+        "above": "atom_frass_circles",
+        "below": "isa_baddie",
+        "reason": "Swapped"
     }
 ]

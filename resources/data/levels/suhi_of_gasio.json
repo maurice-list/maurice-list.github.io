@@ -1,0 +1,25 @@
+{
+	"id": 134144712,
+	"name": "suhi of gasio",
+	"tags": [
+	],
+	"creators": [
+		"7"
+	],
+	"verifier": "7",
+	"verification": "bdNigQMW4Uc",
+	"percentToQualify": 100,
+	"song": 512976,
+	"records": [
+		{
+			"user": "3",
+			"link": "D111T7Dq6f0",
+			"percent": 100
+		},
+        {
+			"user": "1",
+			"link": "iKJ6cpdIgTw",
+			"percent": 100
+		}
+	]
+}
