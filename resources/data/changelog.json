@@ -358,5 +358,15 @@
         "above": "atom_frass_circles",
         "below": "isa_baddie",
         "reason": "Swapped"
+    },
+    {
+        "date": 1772994828,
+        "action": "swapped",
+        "name": "alles_ausser",
+        "from_rank": 5,
+        "to_rank": 4,
+        "above": "schweinepanzer_x",
+        "below": "isayyx_never_clear",
+        "reason": "Swapped"
     }
 ]
