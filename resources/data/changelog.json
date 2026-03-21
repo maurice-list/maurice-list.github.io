@@ -368,5 +368,15 @@
         "above": "schweinepanzer_x",
         "below": "isayyx_never_clear",
         "reason": "Swapped"
+    },
+    {
+        "date": 1774109504,
+        "action": "placed",
+        "name": "portmonee_challenge",
+        "from_rank": 0,
+        "to_rank": 8,
+        "above": "mayodevice_challenge",
+        "below": "ralf_schumacher",
+        "reason": "Added to list"
     }
 ]
