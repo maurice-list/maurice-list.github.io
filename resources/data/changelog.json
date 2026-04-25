@@ -378,5 +378,15 @@
         "above": "mayodevice_challenge",
         "below": "ralf_schumacher",
         "reason": "Added to list"
+    },
+    {
+        "date": 1777126270,
+        "action": "placed",
+        "name": "preussischer_bock",
+        "from_rank": 0,
+        "to_rank": 10,
+        "above": "mauriceville_war",
+        "below": "mayodevice_challenge",
+        "reason": "Added to list"
     }
 ]
