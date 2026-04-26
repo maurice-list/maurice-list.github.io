@@ -89,7 +89,7 @@
     <script>
         const leaderboardContainer = document.getElementById("leaderboard-container");
 
-        function calculatePoints(placement, totalLevels, topPoints = 100, bottomPoints = 50) {
+        function calculatePoints(placement, totalLevels, topPoints = 100, bottomPoints = 20) {
             const range = Math.log(totalLevels);
             const logPlacement = Math.log(placement);
             const normalized = logPlacement / range;

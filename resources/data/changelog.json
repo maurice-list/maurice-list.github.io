@@ -388,5 +388,15 @@
         "above": "mauriceville_war",
         "below": "mayodevice_challenge",
         "reason": "Added to list"
+    },
+    {
+        "date": 1777233570,
+        "action": "placed",
+        "name": "plasmabetriebenes_a",
+        "from_rank": 0,
+        "to_rank": 12,
+        "above": "isa_baddie",
+        "below": "mauriceville_war",
+        "reason": "Added to list"
     }
 ]
