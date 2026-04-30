@@ -418,5 +418,15 @@
         "above": "plasmabetriebenes_a",
         "below": "mauriceville_war",
         "reason": "Moved"
+    },
+    {
+        "date": 1777566043,
+        "action": "placed",
+        "name": "isas_knochenpizza",
+        "from_rank": 0,
+        "to_rank": 2,
+        "above": "isayyx_never_clear",
+        "below": "schweinepanzer_redux",
+        "reason": "Added to list"
     }
 ]

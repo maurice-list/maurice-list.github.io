@@ -2,6 +2,7 @@
 	"id": 139113952,
 	"name": "frgwgth",
 	"tags": [
+		"Chokepoints", "NONG"
 	],
 	"creators": [
 		"1"
@@ -11,5 +12,10 @@
 	"percentToQualify": 100,
 	"song": 595394,
 	"records": [
+		{
+			"user": "3",
+			"link": "CKV9oxUWfKA",
+			"percent": 100
+		}
 	]
 }

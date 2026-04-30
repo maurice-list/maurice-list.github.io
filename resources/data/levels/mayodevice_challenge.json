@@ -2,6 +2,7 @@
 	"id": 117485345,
 	"name": "mayodevice challenge",
 	"tags": [
+		"Decoration"
 	],
 	"creators": [
 		"6"
@@ -29,6 +30,11 @@
 		{
 			"user": "6",
 			"link": "1DsSl0ONdK0",
+			"percent": 100
+		},
+		{
+			"user": "8",
+			"link": "og-vzY8XY_I",
 			"percent": 100
 		}
 	]
