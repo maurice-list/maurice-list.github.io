@@ -428,5 +428,15 @@
         "above": "isayyx_never_clear",
         "below": "schweinepanzer_redux",
         "reason": "Added to list"
+    },
+    {
+        "date": 1777739956,
+        "action": "placed",
+        "name": "isas_zementkuchen",
+        "from_rank": 0,
+        "to_rank": 19,
+        "above": "jonas_challenge",
+        "below": "gammel_gandalf",
+        "reason": "Added to list"
     }
 ]
