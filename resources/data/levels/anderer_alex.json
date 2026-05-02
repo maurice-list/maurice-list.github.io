@@ -1,0 +1,32 @@
+{
+	"id": 132713972,
+	"name": "anderer alex",
+	"tags": [
+        "High CPS"
+	],
+	"creators": [
+		"7"
+	],
+	"verifier": "7",
+	"verification": "azJMwr0xk0c",
+	"percentToQualify": 100,
+	"song": 1447611,
+	"nong": false,
+	"records": [
+		{
+			"user": "3",
+			"link": "DgSqTJxD2yc",
+			"percent": 100
+		},
+        {
+            "user": "6",
+            "link": "yC9xHT3LCLQ",
+            "percent": 100
+        },
+        {
+            "user": "1",
+            "link": "WyN7YyZc6Pw",
+            "percent": 100
+        }
+	]
+}

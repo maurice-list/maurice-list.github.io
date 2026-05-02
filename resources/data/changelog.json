@@ -438,5 +438,15 @@
         "above": "jonas_challenge",
         "below": "gammel_gandalf",
         "reason": "Added to list"
+    },
+    {
+        "date": 1777743123,
+        "action": "placed",
+        "name": "anderer_alex",
+        "from_rank": 0,
+        "to_rank": 27,
+        "above": "imbiss_challenge",
+        "below": "vorhaut_challenge",
+        "reason": "Added to list"
     }
 ]
