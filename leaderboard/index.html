@@ -4,74 +4,113 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leaderboard</title>
+    <link href='https://fonts.googleapis.com/css?family=Lexend+Deca' rel='stylesheet'>
+    <link rel="icon" href="/resources/icons/maurice.png">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1908323352197629"
      crossorigin="anonymous"></script>
     <script>if (document.cookie.includes('darkMode=1')) document.documentElement.classList.add('dark');</script>
     <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { overflow-x: hidden; }
+
         :root {
-            --bg:         #ffffff;
-            --text:       #000000;
-            --border:     #ddd;
-            --table-head: #f2f2f2;
+            --bg:           #ffffff;
+            --text:         #000000;
+            --header-bg:    lightcoral;
+            --header-text:  #000000;
+            --border:       #ddd;
+            --table-head:   #f2f2f2;
         }
         html.dark body {
             --bg:           #1e1e1e;
             --text:         #e0e0e0;
+            --header-bg:    #3a3a3a;
+            --header-text:  #f0f0f0;
             --border:       #555555;
             --table-head:   #2a2a2a;
         }
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
             background-color: var(--bg);
             color: var(--text);
             transition: background-color 0.3s, color 0.3s;
         }
-        .table-scroll {
-            width: 100%;
-            overflow-x: auto;
+
+        /* ── Header ── */
+        .header-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 14px 20px;
+            background-color: var(--header-bg);
+            transition: background-color 0.3s;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-            min-width: 400px;
-        }
-        th, td {
-            border: 1px solid var(--border);
-            padding: 8px;
-            text-align: center;
-            color: var(--text);
-        }
-        th {
-            background-color: var(--table-head);
-        }
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
+        .header-left { display: flex; align-items: center; gap: 10px; }
+        .header-left img { width: 42px; height: 42px; flex-shrink: 0; }
+        .header-right { display: flex; align-items: center; }
+        .site-title { font-family: 'Lexend Deca', sans-serif; font-size: 22px; color: var(--header-text); }
+        .site-title a { color: inherit; text-decoration: none; }
+        .site-title a:hover { opacity: 0.85; }
+        .header-right a {
+            font-family: 'Lexend Deca';
+            font-size: 20px;
+            font-weight: bolder;
+            text-decoration: none;
+            color: var(--header-text);
+            margin-left: 18px;
         }
         #dark-toggle {
-            position: fixed;
-            top: 14px;
-            right: 18px;
             background: none;
-            border: 2px solid var(--text);
+            border: 2px solid var(--header-text);
             border-radius: 20px;
-            padding: 4px 12px;
-            font-size: 20px;
+            padding: 3px 10px;
+            font-size: 18px;
             cursor: pointer;
-            color: var(--text);
+            margin-left: 16px;
+            color: var(--header-text);
             transition: border-color 0.3s, color 0.3s;
-            z-index: 999;
+            line-height: 1;
+            flex-shrink: 0;
         }
+        #dark-toggle:hover { opacity: 0.8; }
+
+        @media (max-width: 520px) {
+            .header-left { flex: 1 1 100%; }
+            .header-right { flex: 1 1 100%; }
+            .header-right a:first-child { margin-left: 0; }
+            .site-title { font-size: 18px; }
+            .header-right a { font-size: 16px; margin-left: 14px; }
+            #dark-toggle { font-size: 16px; margin-left: 14px; }
+        }
+
+        /* ── Content ── */
+        .page-content { padding: 20px; }
+        h1.page-heading { text-align: center; margin-bottom: 20px; color: var(--text); }
+        .table-scroll { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        table { width: 100%; border-collapse: collapse; margin-bottom: 20px; min-width: 360px; }
+        th, td { border: 1px solid var(--border); padding: 8px; text-align: center; color: var(--text); }
+        th { background-color: var(--table-head); }
+
         @media (max-width: 600px) {
-            body { margin: 12px; }
+            .page-content { padding: 12px; }
             th, td { font-size: 13px; padding: 6px 4px; }
         }
     </style>
 </head>
 <body>
-    <button id="dark-toggle" onclick="toggleDark()" title="Toggle dark mode">🌙</button>
+    <div class="header-container">
+        <div class="header-left">
+            <h1 class="site-title"><a href="/">Maurice Challenge List</a></h1>
+            <img src="/resources/images/GrandpaDemon.png" alt="Maurice Icon">
+        </div>
+        <div class="header-right">
+            <a href="/leaderboard">Leaderboard</a>
+            <a href="/changelog">Changelog</a>
+            <button id="dark-toggle" onclick="toggleDark()" title="Toggle dark mode">🌙</button>
+        </div>
+    </div>
     <script>
         function applyDark(dark) {
             document.documentElement.classList.toggle('dark', dark);
@@ -84,8 +123,10 @@
         }
         applyDark(document.documentElement.classList.contains('dark'));
     </script>
-    <h1>Leaderboard</h1>
-    <div id="leaderboard-container">Loading leaderboard...</div>
+    <div class="page-content">
+        <h1 class="page-heading">Leaderboard</h1>
+        <div id="leaderboard-container">Loading leaderboard...</div>
+    </div>
     <script>
         const leaderboardContainer = document.getElementById("leaderboard-container");
 
@@ -97,94 +138,43 @@
         }
 
         Promise.all([
-            fetch("/resources/data/users.json").then(response => response.json()),
-            fetch("/resources/data/levels.json").then(response => response.json())
+            fetch("/resources/data/users.json").then(r => r.json()),
+            fetch("/resources/data/levels.json").then(r => r.json())
         ])
         .then(([userMap, levelIds]) => {
-            const levelFetchPromises = levelIds.map(levelId =>
-                fetch(`/resources/data/levels/${levelId}.json`)
-                    .then(response => response.json())
-                    .catch(error => {
-                        console.error(`Error loading level ${levelId}:`, error);
-                        return null;
-                    })
-            );
-
-            return Promise.all(levelFetchPromises).then(levels => ({
-                userMap,
-                levels: levels.filter(level => level !== null)
-            }));
+            return Promise.all(
+                levelIds.map(id =>
+                    fetch(`/resources/data/levels/${id}.json`)
+                        .then(r => r.json())
+                        .catch(() => null)
+                )
+            ).then(levels => ({ userMap, levels: levels.filter(Boolean) }));
         })
         .then(({ userMap, levels }) => {
             const totalLevels = levels.length;
-
-            // Process leaderboard data
             const leaderboard = Object.keys(userMap).map(userId => {
-                const user = userMap[userId];
                 let totalPoints = 0;
-
                 const beatenLevels = levels.filter(level => {
-                    const isInRecords = level.records && level.records.some(record => record.user === userId);
-                    const isVerifier = level.verifier === userId;
-                    return isInRecords || isVerifier;
+                    const isInRecords = level.records && level.records.some(r => r.user === userId);
+                    return isInRecords || level.verifier === userId;
                 });
-
                 beatenLevels.forEach(level => {
-                    const placement = levels.indexOf(level) + 1;
-                    totalPoints += calculatePoints(placement, totalLevels);
+                    totalPoints += calculatePoints(levels.indexOf(level) + 1, totalLevels);
                 });
-
-                const hardestLevel = beatenLevels.reduce((hardest, level) => {
-                    return !hardest || level.difficulty > hardest.difficulty ? level : hardest;
-                }, null);
-
-                return {
-                    name: user,
-                    levelsBeaten: beatenLevels.length,
-                    hardestLevel: hardestLevel ? hardestLevel.name : "None",
-                    totalPoints
-                };
+                const hardest = beatenLevels.reduce((h, l) => (!h || l.difficulty > h.difficulty ? l : h), null);
+                return { name: userMap[userId], levelsBeaten: beatenLevels.length, hardestLevel: hardest ? hardest.name : "None", totalPoints };
             });
-
             leaderboard.sort((a, b) => b.totalPoints - a.totalPoints);
 
-            let leaderboardHtml = `
-                <div class="table-scroll">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Rank</th>
-                            <th>Name</th>
-                            <th>Levels Beaten</th>
-                            <th>Hardest Level</th>
-                            <th>Total Points</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-            `;
-            leaderboard.forEach((player, index) => {
-                leaderboardHtml += `
-                    <tr>
-                        <td>${index + 1}</td>
-                        <td>${player.name}</td>
-                        <td>${player.levelsBeaten}</td>
-                        <td>${player.hardestLevel}</td>
-                        <td>${player.totalPoints}</td>
-                    </tr>
-                `;
-            });
-            leaderboardHtml += `
-                    </tbody>
-                </table>
-                </div>
-            `;
-
-            leaderboardContainer.innerHTML = leaderboardHtml;
+            leaderboardContainer.innerHTML = `
+                <div class="table-scroll"><table>
+                    <thead><tr><th>Rank</th><th>Name</th><th>Levels Beaten</th><th>Hardest Level</th><th>Total Points</th></tr></thead>
+                    <tbody>${leaderboard.map((p, i) => `
+                        <tr><td>${i+1}</td><td>${p.name}</td><td>${p.levelsBeaten}</td><td>${p.hardestLevel}</td><td>${p.totalPoints}</td></tr>
+                    `).join('')}</tbody>
+                </table></div>`;
         })
-        .catch(error => {
-            console.error("Error loading leaderboard:", error);
-            leaderboardContainer.innerText = "Error loading leaderboard.";
-        });
+        .catch(err => { leaderboardContainer.innerText = "Error loading leaderboard."; });
     </script>
 </body>
 </html>

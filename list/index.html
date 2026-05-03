@@ -11,38 +11,115 @@
      crossorigin="anonymous"></script>
     <script>if (document.cookie.includes('darkMode=1')) document.documentElement.classList.add('dark');</script>
     <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html { overflow-x: hidden; }
+
       :root {
           --bg:         #ffffff;
           --text:       #000000;
           --text-sub:   #555555;
           --link:       blue;
+          --header-bg:  lightcoral;
+          --header-text:#000000;
           --border:     #ddd;
           --table-head: #f2f2f2;
+
+          --history-added-bg:     #fffde7;
+          --history-added-text:   #7a6a00;
+          --history-up-bg:        #e8f5e9;
+          --history-up-text:      #1b5e20;
+          --history-down-bg:      #ffebee;
+          --history-down-text:    #b71c1c;
+          --history-removed-bg:   #f0f0f0;
+          --history-removed-text: #555555;
       }
       html.dark body {
           --bg:           #1e1e1e;
           --text:         #e0e0e0;
           --text-sub:     #aaaaaa;
           --link:         #7eb8f7;
+          --header-bg:    #3a3a3a;
+          --header-text:  #f0f0f0;
           --border:       #555555;
           --table-head:   #2a2a2a;
+
+          --history-added-bg:     #3d3700;
+          --history-added-text:   #ffe57a;
+          --history-up-bg:        #1b3a1e;
+          --history-up-text:      #81c784;
+          --history-down-bg:      #3e1a1a;
+          --history-down-text:    #ef9a9a;
+          --history-removed-bg:   #2a2a2a;
+          --history-removed-text: #999999;
       }
       body {
         font-family: Arial, sans-serif;
-        text-align: center;
-        margin: 20px;
         background-color: var(--bg);
         color: var(--text);
         transition: background-color 0.3s, color 0.3s;
       }
+
+      /* ── Header ── */
+      .header-container {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          flex-wrap: wrap;
+          gap: 8px;
+          padding: 14px 20px;
+          background-color: var(--header-bg);
+          transition: background-color 0.3s;
+      }
+      .header-left { display: flex; align-items: center; gap: 10px; }
+      .header-left img { width: 42px; height: 42px; flex-shrink: 0; }
+      .header-right { display: flex; align-items: center; }
+      .site-title { font-family: 'Lexend Deca', sans-serif; font-size: 22px; color: var(--header-text); }
+      .site-title a { color: inherit; text-decoration: none; }
+      .site-title a:hover { opacity: 0.85; }
+      .header-right a {
+          font-family: 'Lexend Deca';
+          font-size: 20px;
+          font-weight: bolder;
+          text-decoration: none;
+          color: var(--header-text);
+          margin-left: 18px;
+      }
+      #dark-toggle {
+          background: none;
+          border: 2px solid var(--header-text);
+          border-radius: 20px;
+          padding: 3px 10px;
+          font-size: 18px;
+          cursor: pointer;
+          margin-left: 16px;
+          color: var(--header-text);
+          transition: border-color 0.3s, color 0.3s;
+          line-height: 1;
+          flex-shrink: 0;
+      }
+      #dark-toggle:hover { opacity: 0.8; }
+
+      @media (max-width: 520px) {
+          .header-left { flex: 1 1 100%; }
+          .header-right { flex: 1 1 100%; }
+          .header-right a:first-child { margin-left: 0; }
+          .site-title { font-size: 18px; }
+          .header-right a { font-size: 16px; margin-left: 14px; }
+          #dark-toggle { font-size: 16px; margin-left: 14px; }
+      }
+
+      /* ── Content ── */
       a { color: var(--link); }
       table { border-color: var(--border); width: 100%; }
       th, td { border-color: var(--border) !important; }
       th { background-color: var(--table-head) !important; color: var(--text); }
       td { color: var(--text); }
+
       .level-detail {
         max-width: 660px;
         margin: 50px auto;
+        text-align: center;
+        padding: 0 20px 40px;
       }
       .back-link {
         margin-top: 20px;
@@ -51,9 +128,7 @@
         color: var(--link);
         text-decoration: none;
       }
-      .back-link:hover {
-        text-decoration: underline;
-      }
+      .back-link:hover { text-decoration: underline; }
       .video-wrapper {
         position: relative;
         width: 100%;
@@ -66,24 +141,7 @@
         width: 100%; height: 100%;
         border: none;
       }
-      .table-scroll {
-        width: 100%;
-        overflow-x: auto;
-      }
-      #dark-toggle {
-          position: fixed;
-          top: 14px;
-          right: 18px;
-          background: none;
-          border: 2px solid var(--text);
-          border-radius: 20px;
-          padding: 4px 12px;
-          font-size: 20px;
-          cursor: pointer;
-          color: var(--text);
-          transition: border-color 0.3s, color 0.3s;
-          z-index: 999;
-      }
+      .table-scroll { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
       .tags {
         display: flex;
         flex-wrap: wrap;
@@ -99,18 +157,44 @@
         border: 1px solid var(--border);
         color: var(--text-sub);
       }
-      tr.implicit-row td {
-        color: var(--text-sub);
-        font-style: italic;
+
+      /* ── Position history table ── */
+      .history-table { border-collapse: collapse; width: 100%; font-size: 14px; }
+      .history-table th {
+        background-color: #2196f3 !important;
+        color: #ffffff !important;
+        padding: 10px 8px;
+        font-weight: bold;
+        border: none !important;
       }
+      .history-table td {
+        padding: 9px 8px;
+        border: none !important;
+        border-bottom: 1px solid rgba(0,0,0,0.06) !important;
+        font-weight: bold;
+      }
+      .history-table tr.row-added td   { background-color: var(--history-added-bg);   color: var(--history-added-text); }
+      .history-table tr.row-up td      { background-color: var(--history-up-bg);       color: var(--history-up-text); }
+      .history-table tr.row-down td    { background-color: var(--history-down-bg);     color: var(--history-down-text); }
+      .history-table tr.row-removed td { background-color: var(--history-removed-bg);  color: var(--history-removed-text); }
+
       @media (max-width: 600px) {
-        body { margin: 12px; }
-        .level-detail { margin: 40px auto; }
+        .level-detail { margin: 30px auto; padding: 0 14px 30px; }
       }
     </style>
   </head>
   <body>
-    <button id="dark-toggle" onclick="toggleDark()" title="Toggle dark mode">🌙</button>
+    <div class="header-container">
+        <div class="header-left">
+            <h1 class="site-title"><a href="/">Maurice Challenge List</a></h1>
+            <img src="/resources/images/GrandpaDemon.png" alt="Maurice Icon">
+        </div>
+        <div class="header-right">
+            <a href="/leaderboard">Leaderboard</a>
+            <a href="/changelog">Changelog</a>
+            <button id="dark-toggle" onclick="toggleDark()" title="Toggle dark mode">🌙</button>
+        </div>
+    </div>
     <script>
       function applyDark(dark) {
           document.documentElement.classList.toggle('dark', dark);
@@ -123,6 +207,7 @@
       }
       applyDark(document.documentElement.classList.contains('dark'));
     </script>
+
     <div id="level-detail" class="level-detail">Loading level details...</div>
     <script>
       const detailContainer = document.getElementById("level-detail");
@@ -146,27 +231,19 @@
               levelIds.map(id =>
                 fetch(`/resources/data/levels/${id}.json`)
                   .then(resp => resp.json())
-                  .catch(error => {
-                    console.error(`Error loading level ${id}:`, error);
-                    return null;
-                  })
+                  .catch(() => null)
               )
             ).then(levels => ({ userMap, levelIds, levels, changelogData }));
           })
           .then(({ userMap, levelIds, levels, changelogData }) => {
             const levelNameMap = {};
-            levelIds.forEach((id, i) => {
-              if (levels[i] && levels[i].name) levelNameMap[id] = levels[i].name;
-            });
+            levelIds.forEach((id, i) => { if (levels[i] && levels[i].name) levelNameMap[id] = levels[i].name; });
 
-            const validLevels = levels.filter(level => level !== null);
-            if (placement > validLevels.length) {
-              detailContainer.innerText = "Level not found.";
-              return;
-            }
+            const validLevels = levels.filter(Boolean);
+            if (placement > validLevels.length) { detailContainer.innerText = "Level not found."; return; }
+
             const level = validLevels[placement - 1];
             const fileId = levelIds[placement - 1];
-
             const prevPlacement = placement > 1 ? placement - 1 : null;
             const nextPlacement = placement < validLevels.length ? placement + 1 : null;
 
@@ -174,87 +251,75 @@
 
             const historyEntries = changelogData
               .filter(entry => entry.name === fileId)
-              .map(entry => ({ ...entry, implicit: false }));
+              .map(entry => {
+                let reason = entry.reason;
+                if (entry.action === 'placed') reason = 'Added to list';
+                else if (entry.action === 'moved' && entry.to_rank === 0) reason = 'Removed from list';
+                else if (entry.action === 'swapped') reason = `Swapped with ${levelNameMap[entry.above] || entry.above}`;
+                return { ...entry, implicit: false, reason };
+              });
 
             const implicitChanges = reconstructImplicitHistory(changelogData, fileId, levelNameMap);
-
-            const allHistory = [...historyEntries, ...implicitChanges]
-              .sort((a, b) => a.date - b.date);
+            const allHistory = [...historyEntries, ...implicitChanges].sort((a, b) => a.date - b.date);
 
             let historyHtml = "";
             if (allHistory.length > 0) {
+              const rows = allHistory.map(h => {
+                let rowClass, changeHtml;
+                if (!h.from_rank || h.from_rank === 0) { rowClass = 'row-added'; changeHtml = '-'; }
+                else if (h.to_rank === 0) { rowClass = 'row-removed'; changeHtml = '-'; }
+                else {
+                  const delta = h.from_rank - h.to_rank;
+                  if (delta > 0) { rowClass = 'row-up'; changeHtml = `↑ ${delta}`; }
+                  else if (delta < 0) { rowClass = 'row-down'; changeHtml = `↓ ${Math.abs(delta)}`; }
+                  else { rowClass = ''; changeHtml = '-'; }
+                }
+                return `<tr class="${rowClass}">
+                  <td>${new Date(Number(h.date * 1000)).toLocaleDateString()}</td>
+                  <td>${changeHtml}</td>
+                  <td>${h.to_rank !== 0 ? h.to_rank : '-'}</td>
+                  <td>${h.reason}</td>
+                </tr>`;
+              }).join('');
+
               historyHtml = `
-                <h2 style="font-family: Calibri">Position History</h2>
+                <h2 style="font-family: Calibri; margin-top: 20px;">Position History</h2>
                 <a href="#" onclick="togglePositionHistory(); return false;">(Click to expand/collapse)</a>
                 <div id="position-history" style="display: none; margin-top: 10px;">
                   <div class="table-scroll">
-                  <table border="1" cellpadding="8" cellspacing="0">
-                    <thead>
-                      <tr>
-                        <th>Date</th>
-                        <th>Old Position</th>
-                        <th>New Position</th>
-                        <th>Reason</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-              `;
-              allHistory.forEach(h => {
-                const rowClass = h.implicit ? ' class="implicit-row"' : '';
-                historyHtml += `
-                      <tr${rowClass}>
-                        <td>${new Date(Number(h.date * 1000)).toLocaleDateString()}</td>
-                        <td>${h.from_rank != null && h.from_rank !== 0 ? h.from_rank : "-"}</td>
-                        <td>${h.to_rank !== 0 ? h.to_rank : "-"}</td>
-                        <td>${h.reason}</td>
-                      </tr>
-                `;
-              });
-              historyHtml += `
-                    </tbody>
-                  </table>
-                  </div>
-                </div>
-              `;
+                  <table class="history-table">
+                    <thead><tr><th>Date</th><th>Change</th><th>New Position</th><th>Reason</th></tr></thead>
+                    <tbody>${rows}</tbody>
+                  </table></div>
+                </div>`;
             } else {
-              historyHtml = `<h2 style="font-family: Calibri">Position History</h2><p>No history found.</p>`;
+              historyHtml = `<h2 style="font-family: Calibri; margin-top: 20px;">Position History</h2><p>No history found.</p>`;
             }
 
             let recordsHtml = "";
             if (level.records && level.records.length > 0) {
+              const rows = level.records.map(record => `
+                <tr>
+                  <td>${userMap[record.user] || record.user}</td>
+                  <td>${record.percent}%</td>
+                  <td><a href="https://youtu.be/${record.link}" target="_blank">Proof</a></td>
+                </tr>`).join('');
               recordsHtml = `
-                <h2>Records</h2>
+                <h2 style="margin-top: 20px;">Records</h2>
                 <div class="table-scroll">
                 <table border="1" cellpadding="8" cellspacing="0">
-                  <thead>
-                    <tr>
-                      <th>Record Holder</th>
-                      <th>Progress</th>
-                      <th>Video Proof</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-              `;
-              level.records.forEach(record => {
-                const userName = userMap[record.user] || record.user;
-                recordsHtml += `
-                    <tr>
-                      <td>${userName}</td>
-                      <td>${record.percent}%</td>
-                      <td><a href="https://youtu.be/${record.link}" target="_blank">Proof</a></td>
-                    </tr>
-                `;
-              });
-              recordsHtml += `
-                  </tbody>
-                </table>
-                </div>
-              `;
+                  <thead><tr><th>Record Holder</th><th>Progress</th><th>Video Proof</th></tr></thead>
+                  <tbody>${rows}</tbody>
+                </table></div>`;
             } else {
-              recordsHtml = `<h2>Records</h2><p>No records yet!</p>`;
+              recordsHtml = `<h2 style="margin-top: 20px;">Records</h2><p>No records yet!</p>`;
             }
 
             const listPoints = calculatePoints(placement, validLevels.length);
+            const creatorNames = level.creators.map(c => userMap[c] || c);
+            const creatorsStr = creatorNames.length > 1
+              ? creatorNames.slice(0, -1).join(', ') + ' and ' + creatorNames.at(-1)
+              : creatorNames[0];
 
             detailContainer.innerHTML = `
               <h1 style="font-family: 'Montserrat'; font-size: clamp(22px, 5vw, 36px);">
@@ -262,42 +327,24 @@
                 #${placement} - ${level.name}
                 ${nextPlacement ? `<a href="?placement=${nextPlacement}" style="text-decoration: none;">➡</a>` : ""}
               </h1>
-              <p style="font-family: 'Montserrat'; font-size: clamp(14px, 3vw, 18px);">
-                by ${(() => { const names = level.creators.map(c => userMap[c] || c); return names.length > 1 ? names.slice(0, -1).join(', ') + ' and ' + names.at(-1) : names[0]; })()}, verified by ${userMap[level.verifier] || level.verifier}
+              <p style="font-family: 'Montserrat'; font-size: clamp(14px, 3vw, 18px); margin-top: 8px;">
+                by ${creatorsStr}, verified by ${userMap[level.verifier] || level.verifier}
               </p>
-              ${level.tags && level.tags.length > 0 ? `
-              <div class="tags">
-                ${level.tags.map(t => `<span class="tag">${t}</span>`).join('')}
-              </div>` : ''}
+              ${level.tags && level.tags.length > 0 ? `<div class="tags">${level.tags.map(t => `<span class="tag">${t}</span>`).join('')}</div>` : ''}
               <div class="video-wrapper">
-                <iframe
-                        src="https://www.youtube.com/embed/${level.verification}?rel=0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowfullscreen>
-                </iframe>
+                <iframe src="https://www.youtube.com/embed/${level.verification}?rel=0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen></iframe>
               </div>
               <div style="margin-top: 20px; font-family: 'Montserrat'; font-size: clamp(14px, 3vw, 18px); display: flex; justify-content: center; gap: 20px; flex-wrap: wrap;">
-                <div style="text-align: center;">
-                  <p><strong>List Points</strong></p>
-                  <p>${listPoints}</p>
-                </div>
-                <div style="text-align: center;">
-                  <p><strong>Level ID</strong></p>
-                  <p><a href="https://gdbrowser.com/${level.id}" target="_blank" style="text-decoration: none;">${level.id}</a></p>
-                </div>
-                <div style="text-align: center;">
-                  <p><strong>Song ID</strong></p>
-                  <p><a href="https://www.newgrounds.com/audio/listen/${level.song}" target="_blank" style="text-decoration: none;">${level.song || "N/A"}</a></p>
-                </div>
-                ${level.nong ? `
-                <div style="text-align: center;">
-                  <p><strong>NONG</strong></p>
-                  <p id="nong-link">Looking...</p>
-                </div>` : ''}
+                <div style="text-align: center;"><p><strong>List Points</strong></p><p>${listPoints}</p></div>
+                <div style="text-align: center;"><p><strong>Level ID</strong></p><p><a href="https://gdbrowser.com/${level.id}" target="_blank" style="text-decoration: none;">${level.id}</a></p></div>
+                <div style="text-align: center;"><p><strong>Song ID</strong></p><p><a href="https://www.newgrounds.com/audio/listen/${level.song}" target="_blank" style="text-decoration: none;">${level.song || "N/A"}</a></p></div>
+                ${level.nong ? `<div style="text-align: center;"><p><strong>NONG</strong></p><p id="nong-link">Looking...</p></div>` : ''}
               </div>
               ${historyHtml}
               ${recordsHtml}
-              <a class="back-link" href="../">Back to list</a>
+              <a class="back-link" href="/">Back to list</a>
             `;
 
             if (level.nong) {
@@ -308,20 +355,14 @@
                   const url = `/resources/nongs/${fileId}.${ext}`;
                   try {
                     const res = await fetch(url, { method: 'HEAD' });
-                    if (res.ok) {
-                      nongEl.innerHTML = `<a href="${url}" download style="text-decoration: none;">Download</a>`;
-                      return;
-                    }
+                    if (res.ok) { nongEl.innerHTML = `<a href="${url}" download style="text-decoration: none;">Download</a>`; return; }
                   } catch (_) {}
                 }
                 nongEl.textContent = 'Not found';
               })();
             }
           })
-          .catch(error => {
-            console.error("Error fetching data:", error);
-            detailContainer.innerText = "Error loading level details.";
-          });
+          .catch(error => { detailContainer.innerText = "Error loading level details."; });
         }
       }
 
@@ -333,49 +374,31 @@
       function reconstructImplicitHistory(changelogData, fileId, levelNameMap) {
         const list = [];
         const implicitChanges = [];
-
         for (const entry of changelogData) {
           const prevRank = list.indexOf(fileId) + 1;
-
           if (entry.action === 'placed' || (entry.action === 'moved' && entry.to_rank > 0)) {
-            const existingIdx = list.indexOf(entry.name);
-            if (existingIdx !== -1) list.splice(existingIdx, 1);
+            const idx = list.indexOf(entry.name);
+            if (idx !== -1) list.splice(idx, 1);
             list.splice(entry.to_rank - 1, 0, entry.name);
           } else if (entry.action === 'moved' && entry.to_rank === 0) {
-            const existingIdx = list.indexOf(entry.name);
-            if (existingIdx !== -1) list.splice(existingIdx, 1);
+            const idx = list.indexOf(entry.name);
+            if (idx !== -1) list.splice(idx, 1);
           } else if (entry.action === 'swapped') {
-            const fromIdx = entry.from_rank - 1;
-            const toIdx   = entry.to_rank   - 1;
-            if (fromIdx >= 0 && toIdx >= 0 && fromIdx < list.length && toIdx < list.length) {
-              [list[fromIdx], list[toIdx]] = [list[toIdx], list[fromIdx]];
-            }
+            const fi = entry.from_rank - 1, ti = entry.to_rank - 1;
+            if (fi >= 0 && ti >= 0 && fi < list.length && ti < list.length)
+              [list[fi], list[ti]] = [list[ti], list[fi]];
           }
-
           const newRank = list.indexOf(fileId) + 1;
-
           if (entry.name !== fileId && prevRank > 0 && newRank > 0 && newRank !== prevRank) {
             const displayName = levelNameMap[entry.name] || entry.name;
             let reason;
-            if (entry.action === 'placed') {
-              reason = `${displayName} added above`;
-            } else if (entry.action === 'moved' && entry.to_rank === 0) {
-              reason = `${displayName} removed`;
-            } else if (entry.action === 'swapped') {
-              reason = `${displayName} swapped`;
-            } else {
-              reason = `${displayName} moved`;
-            }
-            implicitChanges.push({
-              date:      entry.date,
-              from_rank: prevRank,
-              to_rank:   newRank,
-              reason,
-              implicit:  true
-            });
+            if (entry.action === 'placed') reason = `${displayName} was added above`;
+            else if (entry.action === 'moved' && entry.to_rank === 0) reason = `${displayName} was removed`;
+            else if (entry.action === 'swapped') reason = `${displayName} was swapped`;
+            else reason = `${displayName} was moved`;
+            implicitChanges.push({ date: entry.date, from_rank: prevRank, to_rank: newRank, reason, implicit: true });
           }
         }
-
         return implicitChanges;
       }
 
