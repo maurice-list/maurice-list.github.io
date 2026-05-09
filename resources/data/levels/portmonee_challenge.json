@@ -1,0 +1,27 @@
+{
+	"id": 135555725,
+	"name": "Portmonee Challenge",
+	"tags": [
+		"Chokepoints", "Unbalanced", "Copypasta", "High CPS", "Coins", "Invisible"
+	],
+	"creators": [
+		"4"
+	],
+	"verifier": "4",
+	"verification": "RPKajn_8wmE",
+	"percentToQualify": 100,
+	"song": 1137996,
+	"nong": false,
+	"records": [
+		{
+			"user": "6",
+			"link": "AegDCEJw97c",
+			"percent": 100
+		},
+		{
+			"user": "3",
+			"link": "7q4QFroR3g8",
+			"percent": 100
+		}
+	]
+}

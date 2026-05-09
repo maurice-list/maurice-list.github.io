@@ -1,0 +1,42 @@
+{
+	"id": 117485345,
+	"name": "mayodevice challenge",
+	"tags": [
+		"Decoration"
+	],
+	"creators": [
+		"6"
+	],
+	"verifier": "3",
+	"verification": "qpXoP6rGKk8",
+	"percentToQualify": 100,
+	"song": 616845,
+	"nong": false,
+	"records": [
+		{
+			"user": "1",
+			"link": "9Ewq3lrns7g",
+			"percent": 100
+		},
+		{
+			"user": "2",
+			"link": "RJYWENVSXOc",
+			"percent": 100
+		},
+		{
+			"user": "4",
+			"link": "VVoJpgFsDSY",
+			"percent": 100
+		},
+		{
+			"user": "6",
+			"link": "1DsSl0ONdK0",
+			"percent": 100
+		},
+		{
+			"user": "8",
+			"link": "og-vzY8XY_I",
+			"percent": 100
+		}
+	]
+}
