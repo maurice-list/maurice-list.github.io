@@ -1,0 +1,31 @@
+{
+	"id": 114974537,
+	"name": "Schweinepanzer",
+	"tags": [
+	],
+	"creators": [
+		"3"
+	],
+	"verifier": "3",
+	"verification": "VWJdr4kdIAU",
+	"percentToQualify": 100,
+	"song": 546206,
+	"nong": false,
+	"records": [
+		{
+			"user": "2",
+			"link": "e_xb1JJ22cI",
+			"percent": 100
+		},
+		{
+			"user": "1",
+			"link": "YFa0x2QfZOY",
+			"percent": 100
+		},
+		{
+			"user": "6",
+			"link": "-fYrIxpFy1k",
+			"percent": 100
+		}
+	]
+}
