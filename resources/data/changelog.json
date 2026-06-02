@@ -454,7 +454,7 @@
         "action": "placed",
         "name": "silent_portmonee",
         "from_rank": 0,
-        "to_rank": 4,
+        "to_rank": 5,
         "above": "alles_ausser",
         "below": "isayyx_never_clear",
         "reason": "Added to list unfortunately"
