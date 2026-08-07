@@ -458,5 +458,15 @@
         "above": "alles_ausser",
         "below": "isayyx_never_clear",
         "reason": "Added to list"
+    },
+    {
+        "date": 1786112932,
+        "action": "placed",
+        "name": "schweres_metall",
+        "from_rank": 0,
+        "to_rank": 14,
+        "above": "mayodevice_challenge",
+        "below": "mauriceville_war",
+        "reason": "Added to list"
     }
 ]
