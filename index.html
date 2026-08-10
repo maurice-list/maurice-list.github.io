@@ -22,6 +22,7 @@
             --header-text:  #000000;
             --border:       gray;
             --item-bg:      #ffffff;
+            --tm-live:      #1b5e20;
         }
         html.dark body {
             --bg:           #1e1e1e;
@@ -31,6 +32,7 @@
             --header-text:  #f0f0f0;
             --border:       #555555;
             --item-bg:      #2a2a2a;
+            --tm-live:      #81c784;
         }
         body {
             background-color: var(--bg);
@@ -87,7 +89,43 @@
             #dark-toggle { font-size: 16px; margin-left: 14px; }
         }
 
-        /* ── List ── */
+        .tm-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 10px 16px;
+            background-color: var(--item-bg);
+            border-bottom: 1px solid var(--border);
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            color: var(--text);
+        }
+        .tm-bar button {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            padding: 5px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background-color: var(--bg);
+            color: var(--text);
+            cursor: pointer;
+        }
+        .tm-bar button:disabled { opacity: 0.4; cursor: default; }
+        .tm-bar button:not(:disabled):hover { opacity: 0.75; }
+        .tm-bar input[type="datetime-local"] {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            background-color: var(--bg);
+            color: var(--text);
+        }
+        .tm-label { font-weight: bold; }
+        .tm-live-badge { color: var(--tm-live); }
+
         .demon-list {
             display: flex;
             flex-direction: column;
@@ -156,6 +194,13 @@
             <button id="dark-toggle" onclick="toggleDark()" title="Toggle dark mode">🌙</button>
         </div>
     </div>
+    <div class="tm-bar" id="tm-bar">
+        <button id="tm-prev" title="Previous change">◀</button>
+        <span class="tm-label" id="tm-label">Loading…</span>
+        <button id="tm-next" title="Next change">▶</button>
+        <input type="datetime-local" id="tm-date">
+        <button id="tm-live" title="Back to current list">Now</button>
+    </div>
     <div class="demon-list"></div>
     <script>
         const btn = document.getElementById('dark-toggle');
@@ -172,38 +217,164 @@
     </script>
     <script>
         const container = document.querySelector('.demon-list');
+        const tmLabel = document.getElementById('tm-label');
+        const tmPrev = document.getElementById('tm-prev');
+        const tmNext = document.getElementById('tm-next');
+        const tmDate = document.getElementById('tm-date');
+        const tmLive = document.getElementById('tm-live');
+
+        function reconstructListAt(changelog, targetTs) {
+            const relevant = changelog
+                .filter(e => e.date <= targetTs)
+                .sort((a, b) => a.date - b.date);
+
+            const list = [];
+            for (const e of relevant) {
+                if (e.action === 'placed' || (e.action === 'moved' && e.to_rank > 0)) {
+                    const idx = list.indexOf(e.name);
+                    if (idx !== -1) list.splice(idx, 1);
+                    list.splice(e.to_rank - 1, 0, e.name);
+                } else if (e.action === 'moved' && e.to_rank === 0) {
+                    const idx = list.indexOf(e.name);
+                    if (idx !== -1) list.splice(idx, 1);
+                } else if (e.action === 'swapped') {
+                    const fi = e.from_rank - 1, ti = e.to_rank - 1;
+                    if (fi >= 0 && ti >= 0 && fi < list.length && ti < list.length) {
+                        [list[fi], list[ti]] = [list[ti], list[fi]];
+                    }
+                }
+            }
+            return list;
+        }
+
+        function findPrevEventTs(uniqueDates, ts) {
+            for (let i = uniqueDates.length - 1; i >= 0; i--) {
+                if (uniqueDates[i] < ts) return uniqueDates[i];
+            }
+            return null;
+        }
+        function findNextEventTs(uniqueDates, ts) {
+            for (let i = 0; i < uniqueDates.length; i++) {
+                if (uniqueDates[i] > ts) return uniqueDates[i];
+            }
+            return null;
+        }
+
+        function parseTParam(raw) {
+            if (!raw) return null;
+            const ts = /^\d+$/.test(raw) ? parseInt(raw, 10) : Math.floor(Date.parse(raw) / 1000);
+            return isNaN(ts) ? null : ts;
+        }
+
+        function toDatetimeLocalValue(date) {
+            const pad = n => String(n).padStart(2, '0');
+            return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+        }
+
+        let changelog = null;
+        let userMap = null;
+        let uniqueDates = [];
+        let state = { mode: 'live', ts: null };
+
+        function navigateTo(newState, pushUrl = true) {
+            state = newState;
+            if (pushUrl) {
+                const url = new URL(location.href);
+                if (state.mode === 'live') url.searchParams.delete('t');
+                else url.searchParams.set('t', state.ts);
+                history.pushState({}, '', url);
+            }
+            render();
+        }
+
+        tmPrev.addEventListener('click', () => {
+            const ts = state.mode === 'live' ? Infinity : state.ts;
+            const prev = findPrevEventTs(uniqueDates, ts);
+            if (prev !== null) navigateTo({ mode: 'custom', ts: prev });
+        });
+        tmNext.addEventListener('click', () => {
+            if (state.mode === 'live') return;
+            const next = findNextEventTs(uniqueDates, state.ts);
+            if (next !== null) navigateTo({ mode: 'custom', ts: next });
+            else navigateTo({ mode: 'live', ts: null });
+        });
+        tmLive.addEventListener('click', () => navigateTo({ mode: 'live', ts: null }));
+        tmDate.addEventListener('change', () => {
+            if (!tmDate.value) return;
+            const ts = Math.floor(new Date(tmDate.value).getTime() / 1000);
+            navigateTo({ mode: 'custom', ts });
+        });
+        window.addEventListener('popstate', () => {
+            const ts = parseTParam(new URLSearchParams(location.search).get('t'));
+            state = ts !== null ? { mode: 'custom', ts } : { mode: 'live', ts: null };
+            render();
+        });
+
+        function render() {
+            tmLabel.textContent = 'Loading…';
+            tmPrev.disabled = true;
+            tmNext.disabled = true;
+
+            const levelIdsPromise = state.mode === 'live'
+                ? fetch('/resources/data/levels.json').then(r => r.json())
+                : Promise.resolve(reconstructListAt(changelog, state.ts));
+
+            levelIdsPromise
+                .then(levelIds => Promise.all(
+                    levelIds.map(id =>
+                        fetch(`/resources/data/levels/${id}.json`)
+                            .then(resp => resp.json())
+                            .catch(error => { console.error(`Error loading level ${id}:`, error); return null; })
+                    )
+                ))
+                .then(levels => {
+                    container.innerHTML = '';
+                    const validLevels = levels.filter(level => level !== null);
+                    if (validLevels.length === 0) {
+                        container.innerHTML = '<p style="text-align:center; margin-top:20px; font-family:Montserrat;">The list did not exist yet at this point in time.</p>';
+                    }
+                    validLevels.forEach((demon, idx) => {
+                        const placement = idx + 1;
+                        const demonDiv = document.createElement('div');
+                        demonDiv.classList.add('demon-item');
+                        demonDiv.innerHTML = `
+                            <a href="https://youtu.be/${demon.verification}" target="_blank">
+                                <img src="https://i.ytimg.com/vi/${demon.verification}/mqdefault.jpg" alt="${demon.name}">
+                            </a>
+                            <div class="demon-info">
+                                <a href="./list?placement=${placement}${state.mode === 'custom' ? `&t=${state.ts}` : ''}">#${placement} - ${demon.name}</a>
+                                <span>${userMap[demon.creators[0]] || demon.creators[0]}</span>
+                            </div>
+                        `;
+                        container.appendChild(demonDiv);
+                    });
+
+                    if (state.mode === 'live') {
+                        tmLabel.innerHTML = '<span class="tm-live-badge">● Current List</span>';
+                        tmDate.value = '';
+                    } else {
+                        const d = new Date(state.ts * 1000);
+                        tmLabel.textContent = d.toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+                        tmDate.value = toDatetimeLocalValue(d);
+                    }
+                    tmPrev.disabled = findPrevEventTs(uniqueDates, state.mode === 'live' ? Infinity : state.ts) === null;
+                    tmNext.disabled = state.mode === 'live';
+                })
+                .catch(error => console.error('Error loading levels:', error));
+        }
+
         Promise.all([
             fetch('/resources/data/users.json').then(r => r.json()),
-            fetch('/resources/data/levels.json').then(r => r.json())
-        ])
-        .then(([userMap, levelIds]) => {
-            return Promise.all(
-                levelIds.map(id =>
-                    fetch(`/resources/data/levels/${id}.json`)
-                        .then(resp => resp.json())
-                        .catch(error => { console.error(`Error loading level ${id}:`, error); return null; })
-                )
-            ).then(levels => ({ userMap, levels }));
-        })
-        .then(({ userMap, levels }) => {
-            const validLevels = levels.filter(level => level !== null);
-            validLevels.forEach((demon, idx) => {
-                const placement = idx + 1;
-                const demonDiv = document.createElement('div');
-                demonDiv.classList.add('demon-item');
-                demonDiv.innerHTML = `
-                    <a href="https://youtu.be/${demon.verification}" target="_blank">
-                        <img src="https://i.ytimg.com/vi/${demon.verification}/mqdefault.jpg" alt="${demon.name}">
-                    </a>
-                    <div class="demon-info">
-                        <a href="./list?placement=${placement}">#${placement} - ${demon.name}</a>
-                        <span>${userMap[demon.creators[0]] || demon.creators[0]}</span>
-                    </div>
-                `;
-                container.appendChild(demonDiv);
-            });
-        })
-        .catch(error => console.error('Error loading levels:', error));
+            fetch('/resources/data/changelog.json').then(r => r.json())
+        ]).then(([um, cl]) => {
+            userMap = um;
+            changelog = cl;
+            uniqueDates = [...new Set(changelog.map(e => e.date))].sort((a, b) => a - b);
+
+            const tParam = parseTParam(new URLSearchParams(location.search).get('t'));
+            state = tParam !== null ? { mode: 'custom', ts: tParam } : { mode: 'live', ts: null };
+            render();
+        }).catch(error => console.error('Error loading base data:', error));
     </script>
 </body>
 </html>
