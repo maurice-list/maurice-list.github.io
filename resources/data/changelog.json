@@ -498,5 +498,15 @@
         "above": "blade_of_future",
         "below": "schweinepanzer_redux",
         "reason": "Moved"
+    },
+    {
+        "date": 1786405960,
+        "action": "placed",
+        "name": "sparklerose_love",
+        "from_rank": 0,
+        "to_rank": 26,
+        "above": "suhi_gasio_wall",
+        "below": "schweinepanzer",
+        "reason": "Added to list"
     }
 ]

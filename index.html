@@ -40,7 +40,6 @@
             transition: background-color 0.3s, color 0.3s;
         }
 
-        /* ── Header ── */
         .header-container {
             display: flex;
             align-items: center;
@@ -274,6 +273,7 @@
         let changelog = null;
         let userMap = null;
         let uniqueDates = [];
+        let liveLevelIds = [];
         let state = { mode: 'live', ts: null };
 
         function navigateTo(newState, pushUrl = true) {
@@ -320,13 +320,17 @@
                 : Promise.resolve(reconstructListAt(changelog, state.ts));
 
             levelIdsPromise
-                .then(levelIds => Promise.all(
-                    levelIds.map(id =>
-                        fetch(`/resources/data/levels/${id}.json`)
-                            .then(resp => resp.json())
-                            .catch(error => { console.error(`Error loading level ${id}:`, error); return null; })
-                    )
-                ))
+                .then(levelIds => {
+                    if (state.mode === 'live') liveLevelIds = levelIds;
+                    return Promise.all(
+                        levelIds.map(id =>
+                            fetch(`/resources/data/levels/${id}.json`)
+                                .then(resp => resp.json())
+                                .then(demon => ({ ...demon, slug: id }))
+                                .catch(error => { console.error(`Error loading level ${id}:`, error); return null; })
+                        )
+                    );
+                })
                 .then(levels => {
                     container.innerHTML = '';
                     const validLevels = levels.filter(level => level !== null);
@@ -335,6 +339,10 @@
                     }
                     validLevels.forEach((demon, idx) => {
                         const placement = idx + 1;
+                        const currentPlacement = liveLevelIds.indexOf(demon.slug) + 1;
+                        const nameHtml = currentPlacement > 0
+                            ? `<a href="./list?placement=${currentPlacement}">#${placement} - ${demon.name}</a>`
+                            : `<span>#${placement} - ${demon.name}</span>`;
                         const demonDiv = document.createElement('div');
                         demonDiv.classList.add('demon-item');
                         demonDiv.innerHTML = `
@@ -342,7 +350,7 @@
                                 <img src="https://i.ytimg.com/vi/${demon.verification}/mqdefault.jpg" alt="${demon.name}">
                             </a>
                             <div class="demon-info">
-                                <a href="./list?placement=${placement}${state.mode === 'custom' ? `&t=${state.ts}` : ''}">#${placement} - ${demon.name}</a>
+                                ${nameHtml}
                                 <span>${userMap[demon.creators[0]] || demon.creators[0]}</span>
                             </div>
                         `;
@@ -354,7 +362,7 @@
                         tmDate.value = '';
                     } else {
                         const d = new Date(state.ts * 1000);
-                        tmLabel.textContent = d.toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
+                        tmLabel.textContent = 'As of ' + d.toLocaleString('en-US', { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
                         tmDate.value = toDatetimeLocalValue(d);
                     }
                     tmPrev.disabled = findPrevEventTs(uniqueDates, state.mode === 'live' ? Infinity : state.ts) === null;
@@ -365,10 +373,12 @@
 
         Promise.all([
             fetch('/resources/data/users.json').then(r => r.json()),
-            fetch('/resources/data/changelog.json').then(r => r.json())
-        ]).then(([um, cl]) => {
+            fetch('/resources/data/changelog.json').then(r => r.json()),
+            fetch('/resources/data/levels.json').then(r => r.json())
+        ]).then(([um, cl, ll]) => {
             userMap = um;
             changelog = cl;
+            liveLevelIds = ll;
             uniqueDates = [...new Set(changelog.map(e => e.date))].sort((a, b) => a - b);
 
             const tParam = parseTParam(new URLSearchParams(location.search).get('t'));
