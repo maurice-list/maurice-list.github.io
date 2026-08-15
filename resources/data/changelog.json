@@ -508,5 +508,15 @@
         "above": "suhi_gasio_wall",
         "below": "schweinepanzer",
         "reason": "Added to list"
+    },
+    {
+        "date": 1786804591,
+        "action": "placed",
+        "name": "energiesparmodus",
+        "from_rank": 0,
+        "to_rank": 12,
+        "above": "preussischer_bock",
+        "below": "portmonee_challenge",
+        "reason": "Added to list"
     }
 ]
