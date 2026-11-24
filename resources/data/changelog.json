@@ -525,7 +525,7 @@
         "name": "capital_urinal",
         "from_rank": 0,
         "to_rank": 20,
-        "above": "atom_frass_circles",
+        "above": "isa_never_clear",
         "below": "isa_baddie",
         "reason": "Added to list"
     }
