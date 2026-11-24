@@ -518,5 +518,15 @@
         "above": "preussischer_bock",
         "below": "portmonee_challenge",
         "reason": "Added to list"
+    },
+    {
+        "date": 1795562469,
+        "action": "placed",
+        "name": "capital_urinal",
+        "from_rank": 0,
+        "to_rank": 20,
+        "above": "atom_frass_circles",
+        "below": "isa_baddie",
+        "reason": "Added to list"
     }
 ]
