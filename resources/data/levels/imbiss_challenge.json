@@ -1,0 +1,42 @@
+{
+	"id": 117972432,
+	"name": "imbiss challenge",
+	"tags": [
+		"Copypasta"
+	],
+	"creators": [
+		"6"
+	],
+	"verifier": "6",
+	"verification": "yPC1uxKMHus",
+	"percentToQualify": 100,
+	"song": 726455,
+	"nong": false,
+	"records": [
+		{
+			"user": "1",
+			"link": "QOmxkwVat4o",
+			"percent": 100
+		},
+        {
+            "user": "3",
+            "link": "UUkt7QK9rCA",
+            "percent": 100
+        },
+		{
+			"user": "7",
+			"link": "2o424v6lY3k",
+			"percent": 100
+		},
+		{
+			"user": "2",
+			"link": "lMKlMHqi7lQ",
+			"percent": 100
+		},
+		{
+			"user": "4",
+			"link": "-J9RacQpMks",
+			"percent": 100
+		}
+	]
+}
