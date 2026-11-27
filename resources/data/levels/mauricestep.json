@@ -1,0 +1,27 @@
+{
+	"id": 153033507,
+	"name": "mauricestep",
+	"tags": [
+        "Copypasta", "High CPS"
+	],
+	"creators": [
+		"6"
+	],
+	"verifier": "6",
+	"verification": "SubFf83t1AE",
+	"percentToQualify": 100,
+	"song": 252881,
+	"nong": false,
+	"records": [
+		{
+			"user": "3",
+			"link": "youtube_video_id",
+			"percent": 100
+		},
+        {
+			"user": "1",
+			"link": "youtube_video_id",
+			"percent": 100
+		}
+	]
+}

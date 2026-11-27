@@ -558,5 +558,15 @@
         "above": "capital_urinal",
         "below": "isa_baddie",
         "reason": "Added to list"
+    },
+    {
+        "date": 1795792155,
+        "action": "placed",
+        "name": "mauricestep",
+        "from_rank": 0,
+        "to_rank": 33,
+        "above": "vorhaut_challenge",
+        "below": "joschua_challenge",
+        "reason": "Added to list"
     }
 ]
